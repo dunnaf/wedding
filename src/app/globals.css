@@ -201,3 +201,39 @@
     transform: scale(1);
   }
 }
+
+/* Camera focus corner borders */
+.camera-focus-border {
+  position: relative;
+  border-radius: 8px;
+}
+
+.camera-focus-border::before,
+.camera-focus-border::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* Top corners */
+.camera-focus-border::before {
+  top: 0;
+  height: 30px;
+  background: 
+    linear-gradient(#000000, #000000) left top no-repeat,
+    linear-gradient(#000000, #000000) left top no-repeat;
+  background-size: 3px 30px, 30px 3px;
+}
+
+/* Bottom corners */
+.camera-focus-border::after {
+  bottom: 0;
+  height: 30px;
+  background: 
+    linear-gradient(#000000, #000000) right bottom no-repeat,
+    linear-gradient(#000000, #000000) right bottom no-repeat;
+  background-size: 3px 30px, 30px 3px;
+}

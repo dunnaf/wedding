@@ -21,6 +21,8 @@ export default function EventDetailsModal({
   const [startY, setStartY] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [showBackdrop, setShowBackdrop] = useState(false);
+  const [backdropVisible, setBackdropVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const dragHandleHeight = DRAG_HANDLE_HEIGHT; // Height of the drag handle area
 
@@ -34,6 +36,27 @@ export default function EventDetailsModal({
       return () => clearTimeout(timer);
     }
   }, [showContent]);
+
+  // Handle backdrop animation
+  useEffect(() => {
+    if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowBackdrop(true);
+      // Small delay to allow CSS transition to work
+      const timer = setTimeout(() => {
+        setBackdropVisible(true);
+      }, 10);
+      return () => clearTimeout(timer);
+    } else {
+      // Immediately start fade out
+      setBackdropVisible(false);
+      // Remove from DOM after animation completes
+      const timer = setTimeout(() => {
+        setShowBackdrop(false);
+      }, 300); // Match transition duration
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   // Reset animation key when modal opens to replay animations
   useEffect(() => {
@@ -82,9 +105,11 @@ export default function EventDetailsModal({
   return (
     <>
       {/* Backdrop */}
-      {isOpen && (
+      {showBackdrop && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 md:hidden"
+          className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 md:hidden ${
+            backdropVisible ? "opacity-100" : "opacity-0"
+          }`}
           onClick={() => onOpenChange(false)}
         />
       )}
@@ -116,34 +141,35 @@ export default function EventDetailsModal({
         >
           <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-2" />
           <div className="text-sm uppercase ubuntu text-gray-600 font-semibold">
-            {isOpen ? "Swipe Down" : "Event Details"}
+            {isOpen ? "Geser ke Bawah" : "Detail Acara"}
           </div>
         </div>
 
         {/* Content */}
         <div className="px-4 pb-6 max-h-[70vh] overflow-y-auto">
-          <div key={animationKey} className="flex flex-col items-center gap-6 w-full">
+          <div
+            key={animationKey}
+            className="flex flex-col items-center gap-6 w-full"
+          >
             {/* Date */}
             <a
               href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nanda+%26+Nisa%27s+Wedding&dates=20251207T020000Z/20251207T060000Z&details=You+are+invited+to+Nanda+and+Nisa%27s+wedding+celebration&location=Cordela+Hotel+Cirebon,+Jl.+Cipto+Mangunkusumo+No.111,+Kota+Cirebon,+Jawa+Barat+45133"
               target="_blank"
               rel="noopener noreferrer"
-              className={`border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-all cursor-pointer group ${
-                isOpen
-                  ? "animate-fade-in delay-300 opacity-100"
-                  : "opacity-0"
+              className={`camera-focus-border py-4 px-8 w-full hover:bg-gray-50 transition-all cursor-pointer group ${
+                isOpen ? "animate-fade-in delay-300 opacity-100" : "opacity-0"
               }`}
             >
-              <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
-                Date & Time
+              <div className="text-xs uppercase ubuntu text-gray-600 font-bold mb-2">
+                Tanggal & Waktu
               </div>
               <div className="text-lg md:text-xl dancing-script text-center group-hover:text-blue-600 transition-colors">
-                Sunday, December 7th, 2025
+                Minggu, 7 Desember 2025
                 <br />
-                9:00 AM - 01:00 PM
+                09:00 - 13:00 WIB
               </div>
-              <div className="text-xs text-gray-500 text-center mt-2">
-                Click to add to Google Calendar
+              <div className="text-xs text-gray-500 ubuntu text-center mt-2">
+                Klik untuk menambahkan ke Google Calendar
               </div>
             </a>
 
@@ -152,14 +178,12 @@ export default function EventDetailsModal({
               href="https://maps.app.goo.gl/zSdMFPQRfDsyv9ej9"
               target="_blank"
               rel="noopener noreferrer"
-              className={`border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-all cursor-pointer group ${
-                isOpen
-                  ? "animate-fade-in delay-400 opacity-100"
-                  : "opacity-0"
+              className={`camera-focus-border py-4 px-8 w-full hover:bg-gray-50 transition-all cursor-pointer group ${
+                isOpen ? "animate-fade-in delay-400 opacity-100" : "opacity-0"
               }`}
             >
-              <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
-                Venue
+              <div className="text-xs uppercase ubuntu text-gray-600 font-bold mb-2">
+                Lokasi
               </div>
               <div className="text-lg md:text-xl dancing-script text-center group-hover:text-blue-600 transition-colors">
                 Cordela Hotel Cirebon
@@ -168,9 +192,21 @@ export default function EventDetailsModal({
                 <br />
                 Kota Cirebon, Jawa Barat 45133
               </div>
-              <div className="text-xs text-gray-500 text-center mt-2">
-                Click to view in Google Maps
+              <div className="text-xs text-gray-500 ubuntu text-center mt-2">
+                Klik untuk melihat di Google Maps
               </div>
+            </a>
+
+            {/* RSVP Button */}
+            <a
+              href="https://forms.gle/4LBDDDcMSTt9ZTQh9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`mt-2 px-10 py-4 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-xl dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+                isOpen ? "animate-fade-in delay-500 opacity-100" : "opacity-0"
+              }`}
+            >
+              Konfirmasi Kehadiran
             </a>
           </div>
         </div>
@@ -178,4 +214,3 @@ export default function EventDetailsModal({
     </>
   );
 }
-

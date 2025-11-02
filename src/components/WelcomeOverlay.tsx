@@ -39,10 +39,10 @@ export default function WelcomeOverlay({
         {/* Welcome Message */}
         <div className="space-y-4">
           <h1 className="text-4xl md:text-5xl dancing-script font-bold text-gray-800 animate-fade-in">
-            Welcome to Our Wedding
+            Selamat Datang di Pernikahan Kami
           </h1>
-          <p className="text-md md:text-lg ubuntu text-gray-600 animate-fade-in delay-200">
-            Click below to view the invitation
+          <p className="text-sm md:text-md ubuntu text-gray-600 animate-fade-in delay-200">
+            Klik tombol di bawah untuk melihat undangan
           </p>
         </div>
 
@@ -51,7 +51,7 @@ export default function WelcomeOverlay({
           onClick={handleOpen}
           className="px-10 py-4 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-xl dancing-script font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 animate-fade-in delay-300 relative overflow-hidden group"
         >
-          <span className="relative z-10">Open Invitation</span>
+          <span className="relative z-10">Buka Undangan</span>
           <span className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-900 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
         </button>
       </div>

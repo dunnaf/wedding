@@ -109,7 +109,7 @@ export default function MusicPlayer({ shouldAutoPlay = false }: MusicPlayerProps
         onClick={togglePlay}
         disabled={!isReady}
         className="fixed bottom-20 md:bottom-6 right-6 z-50 w-14 h-14 md:w-16 md:h-16 bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg hover:shadow-xl rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 animate-fade-in delay-800 group disabled:opacity-50"
-        aria-label={isPlaying ? "Pause music" : "Play music"}
+        aria-label={isPlaying ? "Jeda musik" : "Putar musik"}
       >
         {isPlaying ? (
           // Pause Icon
