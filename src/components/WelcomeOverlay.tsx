@@ -7,13 +7,16 @@ interface WelcomeOverlayProps {
   children?: React.ReactNode;
 }
 
-export default function WelcomeOverlay({ onOpen, children }: WelcomeOverlayProps) {
+export default function WelcomeOverlay({
+  onOpen,
+  children,
+}: WelcomeOverlayProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
 
   const handleOpen = () => {
     setIsClosing(true);
-    
+
     // Wait for animation to complete before calling onOpen
     setTimeout(() => {
       setIsOpen(false);
@@ -32,13 +35,13 @@ export default function WelcomeOverlay({ onOpen, children }: WelcomeOverlayProps
       <div className="flex flex-col items-center gap-8 px-6 max-w-md text-center">
         {/* Logo or custom content */}
         {children}
-        
+
         {/* Welcome Message */}
         <div className="space-y-4">
           <h1 className="text-4xl md:text-5xl dancing-script font-bold text-gray-800 animate-fade-in">
             Welcome to Our Wedding
           </h1>
-          <p className="text-md md:text-xl ubuntu text-gray-600 animate-fade-in delay-200">
+          <p className="text-md md:text-lg ubuntu text-gray-600 animate-fade-in delay-200">
             Click below to view the invitation
           </p>
         </div>
@@ -51,12 +54,7 @@ export default function WelcomeOverlay({ onOpen, children }: WelcomeOverlayProps
           <span className="relative z-10">Open Invitation</span>
           <span className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-900 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
         </button>
-
-        {/* Decorative elements */}
-        <div className="absolute top-10 left-10 w-20 h-20 border-2 border-gray-300 rounded-full opacity-20 animate-ping"></div>
-        <div className="absolute bottom-10 right-10 w-32 h-32 border-2 border-gray-300 rounded-full opacity-20 animate-ping delay-300"></div>
       </div>
     </div>
   );
 }
-
