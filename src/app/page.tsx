@@ -82,7 +82,7 @@ export default async function Home({
                 className="text-6xl md:text-8xl dancing-script font-bold text-center"
               />
               <div className="text-3xl md:text-4xl dancing-script text-center">
-                You are cordially invited
+                You are cordially invited to our wedding
               </div>
             </div>
           </div>
