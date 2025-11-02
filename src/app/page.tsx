@@ -23,7 +23,7 @@ export default async function Home({
                 Date & Time
               </div>
               <div className="text-lg md:text-xl dancing-script text-center">
-                Saturday, December 7th, 2025
+                Sunday, December 7th, 2025
                 <br />
                 9:00 AM - 01:00 PM
               </div>
@@ -71,8 +71,8 @@ export default async function Home({
             <div className="block md:hidden absolute bottom-2 left-0 w-full h-[2px] bg-white"></div>
           </div>
           <div className="w-full h-full relative flex flex-col items-center justify-center">
-            <div className="flex flex-col items-center gap-8">
-              <div className="text-3xl md:text-4xl dancing-script text-center">
+            <div className="flex flex-col items-center gap-6 md:gap-8">
+              <div className="text-2xl md:text-4xl dancing-script text-center">
                 Dear
               </div>
               <ShinyText
@@ -81,7 +81,7 @@ export default async function Home({
                 speed={3}
                 className="text-6xl md:text-8xl dancing-script font-bold text-center"
               />
-              <div className="text-3xl md:text-4xl dancing-script text-center">
+              <div className="text-2xl md:text-4xl dancing-script text-center">
                 You are cordially invited to our wedding
               </div>
             </div>
@@ -96,7 +96,7 @@ export default async function Home({
                 Date & Time
               </div>
               <div className="text-lg md:text-xl dancing-script text-center">
-                Saturday, December 7th, 2025
+                Sunday, December 7th, 2025
                 <br />
                 9:00 AM - 01:00 PM
               </div>
