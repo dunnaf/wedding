@@ -1,18 +1,53 @@
+"use client";
+
 import ShinyText from "@/components/ShinyText";
 import MusicPlayer from "@/components/MusicPlayer";
+import WelcomeOverlay from "@/components/WelcomeOverlay";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ name?: string }>;
-}) {
-  const params = await searchParams;
-  const guestName = params.name || "Guest";
+export default function Home() {
+  const [musicStarted, setMusicStarted] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+  const [guestName, setGuestName] = useState("Guest");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name");
+    if (name) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setGuestName(name);
+    }
+    setMounted(true);
+  }, []);
+
+  const handleOverlayOpen = () => {
+    setMusicStarted(true);
+    // Delay content animation slightly for smoother transition
+    setTimeout(() => {
+      setShowContent(true);
+    }, 200);
+  };
 
   return (
     <div className="w-screen h-screen">
-      <MusicPlayer />
+      {mounted && (
+        <>
+          <WelcomeOverlay onOpen={handleOverlayOpen}>
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={150}
+              height={150}
+              className="animate-fade-in"
+            />
+          </WelcomeOverlay>
+
+          <MusicPlayer shouldAutoPlay={musicStarted} />
+        </>
+      )}
+
       <div className="relative flex flex-col md:flex-row w-full h-full">
         <div className="hidden md:flex relative md:w-5/12 xl:w-3/12 h-full flex flex-col items-center justify-center">
           <Image
@@ -20,13 +55,17 @@ export default async function Home({
             alt="Logo"
             width={200}
             height={200}
-            className="animate-fade-in delay-100"
+            className={showContent ? "animate-fade-in delay-100" : "opacity-0"}
           />
 
           {/* Event Details */}
           <div className="flex flex-col items-center mt-8 gap-6 w-full px-8">
             {/* Date */}
-            <div className="border-2 border-gray-200 rounded-lg p-4 w-full animate-fade-in delay-200">
+            <div
+              className={`border-2 border-gray-200 rounded-lg p-4 w-full ${
+                showContent ? "animate-fade-in delay-200" : "opacity-0"
+              }`}
+            >
               <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
                 Date & Time
               </div>
@@ -42,7 +81,9 @@ export default async function Home({
               href="https://maps.app.goo.gl/zSdMFPQRfDsyv9ej9"
               target="_blank"
               rel="noopener noreferrer"
-              className="border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-colors cursor-pointer group animate-fade-in delay-300"
+              className={`border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-colors cursor-pointer group ${
+                showContent ? "animate-fade-in delay-300" : "opacity-0"
+              }`}
             >
               <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
                 Venue
@@ -61,7 +102,11 @@ export default async function Home({
           </div>
 
           {/* RSVP Button */}
-          <button className="mt-8 px-8 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg text-xl dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-fade-in delay-400">
+          <button
+            className={`mt-8 px-10 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-xl dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+              showContent ? "animate-fade-in delay-400" : "opacity-0"
+            }`}
+          >
             RSVP Now
           </button>
         </div>
@@ -71,10 +116,14 @@ export default async function Home({
             alt="Logo"
             width={100}
             height={100}
-            className="animate-fade-in delay-100"
+            className={showContent ? "animate-fade-in delay-100" : "opacity-0"}
           />
 
-          <button className="px-8 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg text-md dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-fade-in delay-200">
+          <button
+            className={`px-10 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-md dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+              showContent ? "animate-fade-in delay-200" : "opacity-0"
+            }`}
+          >
             RSVP Now
           </button>
         </div>
@@ -86,18 +135,32 @@ export default async function Home({
           </div>
           <div className="w-full h-full relative flex flex-col items-center justify-center">
             <div className="flex flex-col items-center gap-6 md:gap-8">
-              <div className="text-2xl md:text-4xl dancing-script text-center animate-fade-in delay-300">
+              <div
+                className={`text-2xl md:text-4xl dancing-script text-center ${
+                  showContent ? "animate-fade-in delay-300" : "opacity-0"
+                }`}
+              >
                 Dear
               </div>
-              <div className="animate-fade-in delay-400">
-                <ShinyText
-                  text={guestName}
-                  disabled={false}
-                  speed={3}
-                  className="text-5xl md:text-8xl dancing-script font-bold text-center"
-                />
-              </div>
-              <div className="text-2xl md:text-4xl dancing-script text-center animate-fade-in delay-500">
+              {mounted && (
+                <div
+                  className={
+                    showContent ? "animate-fade-in delay-400" : "opacity-0"
+                  }
+                >
+                  <ShinyText
+                    text={guestName}
+                    disabled={false}
+                    speed={3}
+                    className="text-5xl md:text-8xl dancing-script font-bold text-center"
+                  />
+                </div>
+              )}
+              <div
+                className={`text-2xl md:text-4xl dancing-script text-center ${
+                  showContent ? "animate-fade-in delay-500" : "opacity-0"
+                }`}
+              >
                 You are cordially invited to our wedding
               </div>
             </div>
@@ -107,7 +170,11 @@ export default async function Home({
           {/* Event Details */}
           <div className="flex flex-col items-center gap-6 w-full">
             {/* Date */}
-            <div className="border-2 border-gray-200 rounded-lg p-4 w-full animate-fade-in delay-600">
+            <div
+              className={`border-2 border-gray-200 rounded-lg p-4 w-full ${
+                showContent ? "animate-fade-in delay-600" : "opacity-0"
+              }`}
+            >
               <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
                 Date & Time
               </div>
@@ -123,7 +190,9 @@ export default async function Home({
               href="https://maps.app.goo.gl/zSdMFPQRfDsyv9ej9"
               target="_blank"
               rel="noopener noreferrer"
-              className="border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-colors cursor-pointer group animate-fade-in delay-700"
+              className={`border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-colors cursor-pointer group ${
+                showContent ? "animate-fade-in delay-700" : "opacity-0"
+              }`}
             >
               <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
                 Venue

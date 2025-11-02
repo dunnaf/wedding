@@ -29,7 +29,11 @@ declare global {
   }
 }
 
-export default function MusicPlayer() {
+interface MusicPlayerProps {
+  shouldAutoPlay?: boolean;
+}
+
+export default function MusicPlayer({ shouldAutoPlay = false }: MusicPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const playerRef = useRef<{
@@ -49,7 +53,7 @@ export default function MusicPlayer() {
       playerRef.current = new window.YT.Player("youtube-player", {
         videoId: "G0WTFfZqjz0",
         playerVars: {
-          autoplay: 1,
+          autoplay: 0, // Set to 0, will be controlled by shouldAutoPlay prop
           controls: 0,
           disablekb: 1,
           fs: 0,
@@ -75,6 +79,13 @@ export default function MusicPlayer() {
       });
     };
   }, []);
+
+  // Auto-play when shouldAutoPlay prop changes to true
+  useEffect(() => {
+    if (shouldAutoPlay && isReady && playerRef.current) {
+      playerRef.current.playVideo();
+    }
+  }, [shouldAutoPlay, isReady]);
 
   const togglePlay = () => {
     if (!isReady || !playerRef.current) return;
