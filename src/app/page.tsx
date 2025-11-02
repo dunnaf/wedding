@@ -1,4 +1,5 @@
 import ShinyText from "@/components/ShinyText";
+import MusicPlayer from "@/components/MusicPlayer";
 import Image from "next/image";
 
 export default async function Home({
@@ -11,14 +12,21 @@ export default async function Home({
 
   return (
     <div className="w-screen h-screen">
+      <MusicPlayer />
       <div className="relative flex flex-col md:flex-row w-full h-full">
         <div className="hidden md:flex relative md:w-5/12 xl:w-3/12 h-full flex flex-col items-center justify-center">
-          <Image src="/logo.png" alt="Logo" width={200} height={200} />
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={200}
+            height={200}
+            className="animate-fade-in delay-100"
+          />
 
           {/* Event Details */}
           <div className="flex flex-col items-center mt-8 gap-6 w-full px-8">
             {/* Date */}
-            <div className="border-2 border-gray-200 rounded-lg p-4 w-full">
+            <div className="border-2 border-gray-200 rounded-lg p-4 w-full animate-fade-in delay-200">
               <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
                 Date & Time
               </div>
@@ -34,7 +42,7 @@ export default async function Home({
               href="https://maps.app.goo.gl/zSdMFPQRfDsyv9ej9"
               target="_blank"
               rel="noopener noreferrer"
-              className="border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-colors cursor-pointer group"
+              className="border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-colors cursor-pointer group animate-fade-in delay-300"
             >
               <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
                 Venue
@@ -53,14 +61,20 @@ export default async function Home({
           </div>
 
           {/* RSVP Button */}
-          <button className="mt-8 px-8 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg text-xl dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <button className="mt-8 px-8 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg text-xl dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-fade-in delay-400">
             RSVP Now
           </button>
         </div>
         <div className="relative w-full flex md:hidden items-center justify-between py-2 px-4">
-          <Image src="/logo.png" alt="Logo" width={100} height={100} />
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={100}
+            height={100}
+            className="animate-fade-in delay-100"
+          />
 
-          <button className="px-8 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg text-md dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <button className="px-8 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg text-md dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-fade-in delay-200">
             RSVP Now
           </button>
         </div>
@@ -72,16 +86,18 @@ export default async function Home({
           </div>
           <div className="w-full h-full relative flex flex-col items-center justify-center">
             <div className="flex flex-col items-center gap-6 md:gap-8">
-              <div className="text-2xl md:text-4xl dancing-script text-center">
+              <div className="text-2xl md:text-4xl dancing-script text-center animate-fade-in delay-300">
                 Dear
               </div>
-              <ShinyText
-                text={guestName}
-                disabled={false}
-                speed={3}
-                className="text-6xl md:text-8xl dancing-script font-bold text-center"
-              />
-              <div className="text-2xl md:text-4xl dancing-script text-center">
+              <div className="animate-fade-in delay-400">
+                <ShinyText
+                  text={guestName}
+                  disabled={false}
+                  speed={3}
+                  className="text-5xl md:text-8xl dancing-script font-bold text-center"
+                />
+              </div>
+              <div className="text-2xl md:text-4xl dancing-script text-center animate-fade-in delay-500">
                 You are cordially invited to our wedding
               </div>
             </div>
@@ -91,7 +107,7 @@ export default async function Home({
           {/* Event Details */}
           <div className="flex flex-col items-center gap-6 w-full">
             {/* Date */}
-            <div className="border-2 border-gray-200 rounded-lg p-4 w-full">
+            <div className="border-2 border-gray-200 rounded-lg p-4 w-full animate-fade-in delay-600">
               <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
                 Date & Time
               </div>
@@ -107,7 +123,7 @@ export default async function Home({
               href="https://maps.app.goo.gl/zSdMFPQRfDsyv9ej9"
               target="_blank"
               rel="noopener noreferrer"
-              className="border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-colors cursor-pointer group"
+              className="border-2 border-gray-200 rounded-lg p-4 w-full hover:bg-gray-50 transition-colors cursor-pointer group animate-fade-in delay-700"
             >
               <div className="text-sm uppercase ubuntu text-gray-600 mb-2">
                 Venue
