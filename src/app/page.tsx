@@ -23,9 +23,9 @@ export default async function Home({
                 Date & Time
               </div>
               <div className="text-lg md:text-xl dancing-script text-center">
-                Saturday, December 15th, 2025
+                Saturday, December 7th, 2025
                 <br />
-                4:00 PM - 10:00 PM
+                9:00 AM - 01:00 PM
               </div>
             </div>
 
@@ -96,9 +96,9 @@ export default async function Home({
                 Date & Time
               </div>
               <div className="text-lg md:text-xl dancing-script text-center">
-                Saturday, December 15th, 2025
+                Saturday, December 7th, 2025
                 <br />
-                4:00 PM - 10:00 PM
+                9:00 AM - 01:00 PM
               </div>
             </div>
 
