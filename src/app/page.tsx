@@ -66,7 +66,9 @@ export default async function Home({
         </div>
         <div className="relative w-full md:w-7/12 xl:w-9/12 h-full">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('/bg.jpg')] bg-cover bg-center">
-            <div className="absolute top-0 left-2 w-[2px] h-full bg-white"></div>
+            <div className="block md:hidden absolute top-2 left-0 w-full h-[2px] bg-white"></div>
+            <div className="hidden md:block absolute top-0 left-2 w-[2px] h-full bg-white"></div>
+            <div className="block md:hidden absolute bottom-2 left-0 w-full h-[2px] bg-white"></div>
           </div>
           <div className="w-full h-full relative flex flex-col items-center justify-center">
             <div className="flex flex-col items-center gap-8">
