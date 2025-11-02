@@ -14,20 +14,20 @@ const ubuntu = Ubuntu({
 });
 
 export const metadata: Metadata = {
-  title: "Nisa & Nanda - Undangan Pernikahan",
+  title: "Nanda & Nisa - Undangan Pernikahan",
   description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami. Minggu, 7 Desember 2025 di Cordela Hotel Cirebon.",
   keywords: ["pernikahan", "undangan pernikahan", "Nisa", "Nanda", "wedding", "Cirebon", "Desember 2025"],
-  authors: [{ name: "Nisa & Nanda" }],
+  authors: [{ name: "Nanda & Nisa" }],
   openGraph: {
-    title: "Nisa & Nanda - Undangan Pernikahan",
+    title: "Nanda & Nisa - Undangan Pernikahan",
     description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami.",
     type: "website",
     locale: "id_ID",
-    siteName: "Nisa & Nanda Wedding",
+    siteName: "Nanda & Nisa Wedding",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nisa & Nanda - Undangan Pernikahan",
+    title: "Nanda & Nisa - Undangan Pernikahan",
     description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami.",
   },
 };
