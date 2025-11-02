@@ -14,8 +14,22 @@ const ubuntu = Ubuntu({
 });
 
 export const metadata: Metadata = {
-  title: "Nisa & Nanda",
-  description: "Nisa & Nanda Wedding",
+  title: "Nisa & Nanda - Undangan Pernikahan",
+  description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami. Minggu, 7 Desember 2025 di Cordela Hotel Cirebon.",
+  keywords: ["pernikahan", "undangan pernikahan", "Nisa", "Nanda", "wedding", "Cirebon", "Desember 2025"],
+  authors: [{ name: "Nisa & Nanda" }],
+  openGraph: {
+    title: "Nisa & Nanda - Undangan Pernikahan",
+    description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami.",
+    type: "website",
+    locale: "id_ID",
+    siteName: "Nisa & Nanda Wedding",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nisa & Nanda - Undangan Pernikahan",
+    description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami.",
+  },
 };
 
 export default function RootLayout({
@@ -24,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body
         className={`${dancingScript.variable} ${ubuntu.variable} antialiased`}
       >
