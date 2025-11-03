@@ -11,6 +11,10 @@
   font-family: var(--font-ubuntu);
 }
 
+.noto-naskh-arabic {
+  font-family: var(--font-noto-naskh-arabic);
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

@@ -282,7 +282,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col justify-center items-center gap-16">
                   <div className="w-full md:w-1/2">
-                    <div className="text-center text-sm md:text-base dancing-script text-gray-600 text-right">
+                    <div className="text-center text-sm md:text-base noto-naskh-arabic text-gray-600 text-right">
                       وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِّنْ أَنفُسِكُمْ
                       أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم
                       مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ
@@ -311,7 +311,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="w-full md:w-1/2">
-                    <div className="text-center text-sm md:text-base dancing-script text-gray-600 text-right">
+                    <div className="text-center text-sm md:text-base noto-naskh-arabic text-gray-600 text-right">
                       وَالَّذِينَ يَقُولُونَ رَبَّنَا هَبْ لَنَا مِنْ
                       أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ
                       وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا
@@ -342,7 +342,7 @@ export default function Home() {
                 <div className="w-full md:w-1/2 flex flex-col gap-4 md:gap-8">
                   <div className="flex flex-col gap-4 md:gap-6">
                     <div className="flex flex-col gap-4">
-                      <div className="text-lg md:text-xl dancing-script text-gray-600 text-right font-bold">
+                      <div className="text-base md:text-lg noto-naskh-arabic text-gray-600 text-right font-bold">
                         بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ
                       </div>
                       <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
@@ -359,16 +359,14 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
-                      Putra Sulung{" "}
-                      <span className=" font-bold">Rini Arianti</span>,
+                      Putra Pertama{" "}
+                      <span className=" font-bold">Aries Octavianus</span> &{" "}
+                      <span className=" font-bold">Rini Arianti</span>.
                     </div>
                     <ShinyText
                       text="Nanda Achidunnafi"
                       className="text-4xl md:text-6xl dancing-script font-bold"
                     />
-                    <div className="text-xs md:text-base ubuntu text-gray-600">
-                      Bin <span className="font-bold">Aries Octavianus.</span>
-                    </div>
                   </div>
                   <div className="w-full h-[160px] flex justify-center items-center overflow-hidden">
                     <Image
@@ -380,15 +378,13 @@ export default function Home() {
                     />
                   </div>
                   <div className="flex flex-col items-end gap-4 md:gap-6">
-                    <div className="text-xs md:text-base ubuntu text-gray-600">
-                      Putri Sulung <span className=" font-bold">Raeni</span>,
-                    </div>
                     <ShinyText
                       text="Khoirun Nisa Amarsya"
                       className="text-4xl md:text-6xl dancing-script font-bold text-right"
                     />
                     <div className="text-xs md:text-base ubuntu text-gray-600">
-                      Bin <span className="font-bold">Hisyam.</span>
+                      Putri Pertama <span className=" font-bold">Hisyam</span> &{" "}
+                      <span className=" font-bold">Raeni</span>.
                     </div>
                   </div>
                   <div className="flex justify-center py-4">

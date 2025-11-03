@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Dancing_Script, Ubuntu } from "next/font/google";
+import { Dancing_Script, Ubuntu, Noto_Naskh_Arabic } from "next/font/google";
 import "./globals.css";
 
 const dancingScript = Dancing_Script({
@@ -11,6 +11,12 @@ const ubuntu = Ubuntu({
   variable: "--font-ubuntu",
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
+});
+
+const notoNaskhArabic = Noto_Naskh_Arabic({
+  variable: "--font-noto-naskh-arabic",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body
-        className={`${dancingScript.variable} ${ubuntu.variable} antialiased`}
+        className={`${dancingScript.variable} ${ubuntu.variable} ${notoNaskhArabic.variable} antialiased`}
       >
         {children}
       </body>
