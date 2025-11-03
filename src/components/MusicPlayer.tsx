@@ -53,20 +53,27 @@ const MusicPlayer = forwardRef<MusicPlayerRef, MusicPlayerProps>(({ shouldAutoPl
     isMuted: () => boolean;
   } | null>(null);
   const autoplayAttemptedRef = useRef(false);
+  const pendingPlayRef = useRef(false); // Track if play was requested before ready
 
   // Expose play/pause methods to parent via ref
   useImperativeHandle(ref, () => ({
     play: () => {
       if (playerRef.current && isReady) {
+        // Player is ready, play immediately
         setHasUserInteracted(true);
         playerRef.current.unMute();
         playerRef.current.playVideo();
+      } else {
+        // Player not ready yet, queue the play action
+        pendingPlayRef.current = true;
+        setHasUserInteracted(true);
       }
     },
     pause: () => {
       if (playerRef.current && isReady) {
         playerRef.current.pauseVideo();
       }
+      pendingPlayRef.current = false; // Cancel pending play
     },
   }), [isReady]);
 
@@ -90,6 +97,13 @@ const MusicPlayer = forwardRef<MusicPlayerRef, MusicPlayerProps>(({ shouldAutoPl
       events: {
         onReady: () => {
           setIsReady(true);
+          
+          // If play was requested before player was ready, play now
+          if (pendingPlayRef.current && playerRef.current) {
+            pendingPlayRef.current = false;
+            playerRef.current.unMute();
+            playerRef.current.playVideo();
+          }
         },
         onStateChange: (event: { data: number }) => {
           if (event.data === window.YT.PlayerState.PLAYING) {
