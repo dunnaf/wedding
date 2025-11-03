@@ -19,6 +19,9 @@ declare global {
       ) => {
         playVideo: () => void;
         pauseVideo: () => void;
+        mute: () => void;
+        unMute: () => void;
+        isMuted: () => boolean;
       };
       PlayerState: {
         PLAYING: number;
@@ -36,12 +39,30 @@ interface MusicPlayerProps {
 export default function MusicPlayer({ shouldAutoPlay = false }: MusicPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const playerRef = useRef<{
     playVideo: () => void;
     pauseVideo: () => void;
+    mute: () => void;
+    unMute: () => void;
+    isMuted: () => boolean;
   } | null>(null);
+  const autoplayAttemptedRef = useRef(false);
 
   useEffect(() => {
+    // Check if YouTube API script is already loaded
+    if (window.YT && window.YT.Player) {
+      initializePlayer();
+      return;
+    }
+
+    // Check if script is already being loaded
+    const existingScript = document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
+    if (existingScript) {
+      window.onYouTubeIframeAPIReady = initializePlayer;
+      return;
+    }
+
     // Load YouTube IFrame API
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -49,50 +70,77 @@ export default function MusicPlayer({ shouldAutoPlay = false }: MusicPlayerProps
     firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
 
     // Initialize player when API is ready
-    window.onYouTubeIframeAPIReady = () => {
-      playerRef.current = new window.YT.Player("youtube-player", {
-        videoId: "G0WTFfZqjz0",
-        playerVars: {
-          autoplay: 0, // Set to 0, will be controlled by shouldAutoPlay prop
-          controls: 0,
-          disablekb: 1,
-          fs: 0,
-          modestbranding: 1,
-          playsinline: 1,
-          rel: 0,
-          showinfo: 0,
-          loop: 1,
-          playlist: "G0WTFfZqjz0", // Required for loop to work
-        },
-        events: {
-          onReady: () => {
-            setIsReady(true);
-          },
-          onStateChange: (event: { data: number }) => {
-            if (event.data === window.YT.PlayerState.PLAYING) {
-              setIsPlaying(true);
-            } else if (event.data === window.YT.PlayerState.PAUSED) {
-              setIsPlaying(false);
-            }
-          },
-        },
-      });
-    };
+    window.onYouTubeIframeAPIReady = initializePlayer;
   }, []);
+
+  const initializePlayer = () => {
+    if (playerRef.current) return; // Prevent duplicate initialization
+
+    playerRef.current = new window.YT.Player("youtube-player", {
+      videoId: "G0WTFfZqjz0",
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        modestbranding: 1,
+        playsinline: 1,
+        rel: 0,
+        showinfo: 0,
+        loop: 1,
+        playlist: "G0WTFfZqjz0", // Required for loop to work
+      },
+      events: {
+        onReady: () => {
+          setIsReady(true);
+        },
+        onStateChange: (event: { data: number }) => {
+          if (event.data === window.YT.PlayerState.PLAYING) {
+            setIsPlaying(true);
+          } else if (event.data === window.YT.PlayerState.PAUSED) {
+            setIsPlaying(false);
+          }
+        },
+      },
+    });
+  };
 
   // Auto-play when shouldAutoPlay prop changes to true
   useEffect(() => {
-    if (shouldAutoPlay && isReady && playerRef.current) {
-      playerRef.current.playVideo();
+    if (shouldAutoPlay && isReady && playerRef.current && !autoplayAttemptedRef.current) {
+      autoplayAttemptedRef.current = true;
+      setHasUserInteracted(true);
+
+      // Try to play - mobile browsers may allow after user interaction
+      const attemptPlay = async () => {
+        try {
+          if (playerRef.current) {
+            playerRef.current.unMute();
+            playerRef.current.playVideo();
+          }
+        } catch (error) {
+          console.log("Autoplay failed, waiting for user interaction:", error);
+        }
+      };
+
+      // Small delay to ensure user interaction is registered
+      setTimeout(attemptPlay, 100);
     }
   }, [shouldAutoPlay, isReady]);
 
   const togglePlay = () => {
     if (!isReady || !playerRef.current) return;
 
+    // Mark that user has interacted
+    if (!hasUserInteracted) {
+      setHasUserInteracted(true);
+    }
+
     if (isPlaying) {
       playerRef.current.pauseVideo();
     } else {
+      // Ensure audio is unmuted when user manually plays
+      playerRef.current.unMute();
       playerRef.current.playVideo();
     }
   };
