@@ -49,6 +49,25 @@ export default function Home() {
     setMounted(true);
   }, []);
 
+  // Prevent scrolling when overlay is active
+  useEffect(() => {
+    if (!musicStarted) {
+      // Overlay is active - prevent scrolling
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      // Overlay is closed - allow scrolling
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [musicStarted]);
+
   // Intersection Observer for verse section animations
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -317,9 +336,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div
-                  className={`absolute top-4 md:top-20 left-0 md:left-20 transform rotate-90 transition-opacity duration-700 ${
-                    showVerseSection ? "animate-fade-in delay-100" : "opacity-0"
-                  }`}
+                  className={`absolute top-4 md:top-20 left-0 md:left-20 transform rotate-90`}
                 >
                   <Image
                     src="/angle-cal.png"
@@ -330,9 +347,7 @@ export default function Home() {
                   />
                 </div>
                 <div
-                  className={`absolute bottom-4 md:bottom-20 left-2 md:left-20 transition-opacity duration-700 ${
-                    showVerseSection ? "animate-fade-in delay-200" : "opacity-0"
-                  }`}
+                  className={`absolute bottom-4 md:bottom-20 left-2 md:left-20`}
                 >
                   <Image
                     src="/angle-cal.png"
@@ -343,9 +358,7 @@ export default function Home() {
                   />
                 </div>
                 <div
-                  className={`absolute top-4 md:top-20 right-0 md:right-20 transform rotate-90 transition-opacity duration-700 ${
-                    showVerseSection ? "animate-fade-in delay-100" : "opacity-0"
-                  }`}
+                  className={`absolute top-4 md:top-20 right-0 md:right-20 transform rotate-90`}
                 >
                   <Image
                     src="/angle-cal.png"
@@ -356,9 +369,7 @@ export default function Home() {
                   />
                 </div>
                 <div
-                  className={`absolute bottom-4 md:bottom-20 right-2 md:right-20 transform transition-opacity duration-700 ${
-                    showVerseSection ? "animate-fade-in delay-200" : "opacity-0"
-                  }`}
+                  className={`absolute bottom-4 md:bottom-20 right-2 md:right-20 transform`}
                 >
                   <Image
                     src="/angle-cal.png"
@@ -369,33 +380,57 @@ export default function Home() {
                   />
                 </div>
                 <div className="flex flex-col justify-center items-center gap-16">
-                  <div
-                    className={`w-full md:w-1/2 ${
-                      showVerseSection
-                        ? "animate-fade-in delay-300"
-                        : "opacity-0"
-                    }`}
-                  >
-                    <div className="text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right">
+                  <div className={`w-full md:w-1/2`}>
+                    <div
+                      className={`text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right ${
+                        showVerseSection
+                          ? "animate-fade-in delay-300"
+                          : "opacity-0"
+                      }`}
+                    >
                       وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِّنْ أَنفُسِكُمْ
                       أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم
                       مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ
                       لِّقَوْمٍ يَتَفَكَّرُونَ
                     </div>
-                    <div className="flex justify-end mt-4">
+                    <div
+                      className={`flex justify-end mt-4 ${
+                        showVerseSection
+                          ? "animate-fade-in delay-400"
+                          : "opacity-0"
+                      }`}
+                    >
                       <div className="relative w-7/12 h-[1px] bg-gray-600">
                         <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="text-center text-sm md:text-base dancing-script text-center my-4 font-bold">
+                    <div
+                      className={`text-center text-sm md:text-base dancing-script text-center my-4 font-bold ${
+                        showVerseSection
+                          ? "animate-fade-in delay-500"
+                          : "opacity-0"
+                      }`}
+                    >
                       QS. Ar-Rum: 21
                     </div>
-                    <div className="flex mb-4">
+                    <div
+                      className={`flex mb-4 ${
+                        showVerseSection
+                          ? "animate-fade-in delay-600"
+                          : "opacity-0"
+                      }`}
+                    >
                       <div className="relative w-7/12 h-[1px] bg-gray-600">
                         <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
+                    <div
+                      className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
+                        showVerseSection
+                          ? "animate-fade-in delay-700"
+                          : "opacity-0"
+                      }`}
+                    >
                       “Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia
                       menciptakan pasangan-pasangan untukmu dari jenismu
                       sendiri, agar kamu cenderung dan merasa tenteram
@@ -404,32 +439,56 @@ export default function Home() {
                       terdapat tanda-tanda bagi kaum yang berpikir.”
                     </div>
                   </div>
-                  <div
-                    className={`w-full md:w-1/2 ${
-                      showVerseSection
-                        ? "animate-fade-in delay-500"
-                        : "opacity-0"
-                    }`}
-                  >
-                    <div className="text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right">
+                  <div className={`w-full md:w-1/2`}>
+                    <div
+                      className={`text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right ${
+                        showVerseSection
+                          ? "animate-fade-in delay-800"
+                          : "opacity-0"
+                      }`}
+                    >
                       وَالَّذِينَ يَقُولُونَ رَبَّنَا هَبْ لَنَا مِنْ
                       أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ
                       وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا
                     </div>
-                    <div className="flex justify-end mt-4">
+                    <div
+                      className={`flex justify-end mt-4 ${
+                        showVerseSection
+                          ? "animate-fade-in delay-900"
+                          : "opacity-0"
+                      }`}
+                    >
                       <div className="relative w-7/12 h-[1px] bg-gray-600">
                         <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="text-center text-sm md:text-base dancing-script text-center my-4 font-bold">
+                    <div
+                      className={`text-center text-sm md:text-base dancing-script text-center my-4 font-bold ${
+                        showVerseSection
+                          ? "animate-fade-in delay-1000"
+                          : "opacity-0"
+                      }`}
+                    >
                       QS. Al-Furqan: 74
                     </div>
-                    <div className="flex mb-4">
+                    <div
+                      className={`flex mb-4 ${
+                        showVerseSection
+                          ? "animate-fade-in delay-1100"
+                          : "opacity-0"
+                      }`}
+                    >
                       <div className="relative w-7/12 h-[1px] bg-gray-600">
                         <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
+                    <div
+                      className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
+                        showVerseSection
+                          ? "animate-fade-in delay-1200"
+                          : "opacity-0"
+                      }`}
+                    >
                       “Dan orang-orang yang berkata: ‘Ya Tuhan kami,
                       anugerahkanlah kepada kami istri-istri dan keturunan kami
                       sebagai penyenang hati (kami), dan jadikanlah kami
@@ -443,23 +502,35 @@ export default function Home() {
                 className="relative w-full h-screen flex flex-col justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white"
               >
                 <div className="w-full md:w-1/2 flex flex-col gap-4 md:gap-8">
-                  <div
-                    className={`flex flex-col gap-4 md:gap-6 ${
-                      showBrideGroomSection
-                        ? "animate-fade-in delay-100"
-                        : "opacity-0"
-                    }`}
-                  >
+                  <div className={`flex flex-col gap-4 md:gap-6 `}>
                     <div className="flex flex-col gap-4">
-                      <div className="text-base md:text-xl noto-naskh-arabic text-gray-600 text-right font-bold">
+                      <div
+                        className={`text-base md:text-xl noto-naskh-arabic text-gray-600 text-right font-bold ${
+                          showBrideGroomSection
+                            ? "animate-fade-in delay-100"
+                            : "opacity-0"
+                        }`}
+                      >
                         بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ
                       </div>
-                      <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
+                      <div
+                        className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
+                          showBrideGroomSection
+                            ? "animate-fade-in delay-200"
+                            : "opacity-0"
+                        }`}
+                      >
                         Dalam kasih dan izin-Nya kami dipertemukan, <br />
                         menapaki jalan cinta yang diridhai Allah SWT.
                       </div>
                     </div>
-                    <div className="flex justify-center py-4">
+                    <div
+                      className={`flex justify-center py-4 ${
+                        showBrideGroomSection
+                          ? "animate-fade-in delay-300"
+                          : "opacity-0"
+                      }`}
+                    >
                       <div className="relative w-5/12 md:w-6/12 h-[1px] bg-gray-600">
                         <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
@@ -467,20 +538,34 @@ export default function Home() {
                         <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
+                    <div
+                      className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
+                        showBrideGroomSection
+                          ? "animate-fade-in delay-400"
+                          : "opacity-0"
+                      }`}
+                    >
                       Putra Pertama{" "}
                       <span className=" font-bold">Aries Octavianus</span> &{" "}
                       <span className=" font-bold">Rini Arianti</span>.
                     </div>
-                    <ShinyText
-                      text="Nanda Achidunnafi"
-                      className="text-4xl md:text-6xl dancing-script font-bold"
-                    />
+                    <div
+                      className={`${
+                        showBrideGroomSection
+                          ? "animate-fade-in delay-500"
+                          : "opacity-0"
+                      }`}
+                    >
+                      <ShinyText
+                        text="Nanda Achidunnafi"
+                        className="text-4xl md:text-6xl dancing-script font-bold"
+                      />
+                    </div>
                   </div>
                   <div
                     className={`w-full h-[160px] flex justify-center items-center overflow-hidden ${
                       showBrideGroomSection
-                        ? "animate-fade-in delay-400"
+                        ? "animate-fade-in delay-600"
                         : "opacity-0"
                     }`}
                   >
@@ -492,18 +577,26 @@ export default function Home() {
                       className="w-[250px] h-[250px] object-cover"
                     />
                   </div>
-                  <div
-                    className={`flex flex-col items-end gap-4 md:gap-6 ${
-                      showBrideGroomSection
-                        ? "animate-fade-in delay-500"
-                        : "opacity-0"
-                    }`}
-                  >
-                    <ShinyText
-                      text="Khoirun Nisa Amarsya"
-                      className="text-4xl md:text-6xl dancing-script font-bold text-right"
-                    />
-                    <div className="text-xs md:text-base ubuntu text-gray-600">
+                  <div className={`flex flex-col items-end gap-4 md:gap-6`}>
+                    <div
+                      className={`${
+                        showBrideGroomSection
+                          ? "animate-fade-in delay-700"
+                          : "opacity-0"
+                      }`}
+                    >
+                      <ShinyText
+                        text="Khoirun Nisa Amarsya"
+                        className="text-4xl md:text-6xl dancing-script font-bold text-right"
+                      />
+                    </div>
+                    <div
+                      className={`text-xs md:text-base ubuntu text-gray-600 ${
+                        showBrideGroomSection
+                          ? "animate-fade-in delay-800"
+                          : "opacity-0"
+                      }`}
+                    >
                       Putri Pertama <span className=" font-bold">Hisyam</span> &{" "}
                       <span className=" font-bold">Raeni</span>.
                     </div>
@@ -511,7 +604,7 @@ export default function Home() {
                   <div
                     className={`flex justify-center py-4 ${
                       showBrideGroomSection
-                        ? "animate-fade-in delay-600"
+                        ? "animate-fade-in delay-900"
                         : "opacity-0"
                     }`}
                   >
@@ -525,7 +618,7 @@ export default function Home() {
                   <div
                     className={`text-lg md:text-xl dancing-script text-gray-600 text-center font-bold ${
                       showBrideGroomSection
-                        ? "animate-fade-in delay-700"
+                        ? "animate-fade-in delay-1000"
                         : "opacity-0"
                     }`}
                   >
