@@ -253,7 +253,7 @@ export default function Home() {
                     className="w-[100px] md:w-[200px] h-[100px] md:h-[200px]"
                   />
                 </div>
-                <div className="absolute bottom-16 md:bottom-20 left-2 md:left-20">
+                <div className="absolute bottom-4 md:bottom-20 left-2 md:left-20">
                   <Image
                     src="/angle-cal.png"
                     alt="Caligraphic Angle"
@@ -271,7 +271,7 @@ export default function Home() {
                     className="w-[100px] md:w-[200px] h-[100px] md:h-[200px] scale-y-[-1]"
                   />
                 </div>
-                <div className="absolute bottom-16 md:bottom-20 right-2 md:right-20 transform">
+                <div className="absolute bottom-4 md:bottom-20 right-2 md:right-20 transform">
                   <Image
                     src="/angle-cal.png"
                     alt="Caligraphic Angle"
