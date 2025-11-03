@@ -282,7 +282,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col justify-center items-center gap-16">
                   <div className="w-full md:w-1/2">
-                    <div className="text-center text-xl md:text-2xl ubuntu text-gray-600 text-right">
+                    <div className="text-center text-lg md:text-xl ubuntu text-gray-600 text-right">
                       وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِّنْ أَنفُسِكُمْ
                       أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم
                       مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ
@@ -301,7 +301,7 @@ export default function Home() {
                         <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="text-md md:text-lg ubuntu text-gray-600 font-light">
+                    <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
                       “Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia
                       menciptakan pasangan-pasangan untukmu dari jenismu
                       sendiri, agar kamu cenderung dan merasa tenteram
@@ -311,7 +311,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="w-full md:w-1/2">
-                    <div className="text-center text-xl md:text-2xl ubuntu text-gray-600 text-right">
+                    <div className="text-center text-lg md:text-xl ubuntu text-gray-600 text-right">
                       وَالَّذِينَ يَقُولُونَ رَبَّنَا هَبْ لَنَا مِنْ
                       أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ
                       وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا
@@ -329,7 +329,7 @@ export default function Home() {
                         <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="text-md md:text-lg ubuntu text-gray-600 font-light">
+                    <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
                       “Dan orang-orang yang berkata: ‘Ya Tuhan kami,
                       anugerahkanlah kepada kami istri-istri dan keturunan kami
                       sebagai penyenang hati (kami), dan jadikanlah kami
@@ -341,11 +341,11 @@ export default function Home() {
               <div className="relative w-full h-screen flex flex-col justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white">
                 <div className="w-full md:w-1/2 flex flex-col gap-4 md:gap-8">
                   <div className="flex flex-col gap-4 md:gap-6">
-                    <div className="flex flex-col gap-8">
-                      <div className="text-xl md:text-2xl ubuntu text-gray-600 text-right font-bold">
+                    <div className="flex flex-col gap-4">
+                      <div className="text-lg md:text-xl ubuntu text-gray-600 text-right font-bold">
                         بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ
                       </div>
-                      <div className="text-md md:text-lg ubuntu text-gray-600 font-light">
+                      <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
                         Dalam kasih dan izin-Nya kami dipertemukan, <br />
                         menapaki jalan cinta yang diridhai Allah SWT.
                       </div>
@@ -358,15 +358,15 @@ export default function Home() {
                         <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="text-md md:text-lg ubuntu text-gray-600 font-light">
+                    <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
                       Putra Sulung{" "}
                       <span className=" font-bold">Rini Arianti</span>,
                     </div>
                     <ShinyText
                       text="Nanda Achidunnafi"
-                      className="text-5xl md:text-7xl dancing-script font-bold"
+                      className="text-4xl md:text-6xl dancing-script font-bold"
                     />
-                    <div className="text-md md:text-lg ubuntu text-gray-600">
+                    <div className="text-xs md:text-base ubuntu text-gray-600">
                       Bin <span className="font-bold">Aries Octavianus.</span>
                     </div>
                   </div>
@@ -380,14 +380,14 @@ export default function Home() {
                     />
                   </div>
                   <div className="flex flex-col items-end gap-4 md:gap-6">
-                    <div className="text-md md:text-lg ubuntu text-gray-600">
+                    <div className="text-xs md:text-base ubuntu text-gray-600">
                       Putri Sulung <span className=" font-bold">Raeni</span>,
                     </div>
                     <ShinyText
                       text="Khoirun Nisa Amarsya"
-                      className="text-5xl md:text-7xl dancing-script font-bold text-right"
+                      className="text-4xl md:text-6xl dancing-script font-bold text-right"
                     />
-                    <div className="text-md md:text-lg ubuntu text-gray-600">
+                    <div className="text-xs md:text-base ubuntu text-gray-600">
                       Bin <span className="font-bold">Hisyam.</span>
                     </div>
                   </div>
