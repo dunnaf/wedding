@@ -1,13 +1,13 @@
 "use client";
 
 import ShinyText from "@/components/ShinyText";
-import MusicPlayer from "@/components/MusicPlayer";
+import MusicPlayer, { MusicPlayerRef } from "@/components/MusicPlayer";
 import WelcomeOverlay from "@/components/WelcomeOverlay";
 import EventDetailsModal, {
   DRAG_HANDLE_HEIGHT,
 } from "@/components/EventDetailsModal";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Home() {
   const [musicStarted, setMusicStarted] = useState(false);
@@ -15,6 +15,7 @@ export default function Home() {
   const [guestName, setGuestName] = useState("Guest");
   const [mounted, setMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const musicPlayerRef = useRef<MusicPlayerRef>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -27,6 +28,12 @@ export default function Home() {
   }, []);
 
   const handleOverlayOpen = () => {
+    // Start music IMMEDIATELY in this user gesture event handler
+    // This is critical for iOS Safari autoplay to work
+    if (musicPlayerRef.current) {
+      musicPlayerRef.current.play();
+    }
+    
     setMusicStarted(true);
     // Delay content animation slightly for smoother transition
     setTimeout(() => {
@@ -48,7 +55,7 @@ export default function Home() {
             />
           </WelcomeOverlay>
 
-          <MusicPlayer shouldAutoPlay={musicStarted} />
+          <MusicPlayer ref={musicPlayerRef} shouldAutoPlay={musicStarted} />
         </>
       )}
 

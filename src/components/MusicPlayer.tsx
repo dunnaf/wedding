@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
 
 // Extend Window interface for YouTube API
 declare global {
@@ -36,7 +36,12 @@ interface MusicPlayerProps {
   shouldAutoPlay?: boolean;
 }
 
-export default function MusicPlayer({ shouldAutoPlay = false }: MusicPlayerProps) {
+export interface MusicPlayerRef {
+  play: () => void;
+  pause: () => void;
+}
+
+const MusicPlayer = forwardRef<MusicPlayerRef, MusicPlayerProps>(({ shouldAutoPlay = false }, ref) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
@@ -49,29 +54,21 @@ export default function MusicPlayer({ shouldAutoPlay = false }: MusicPlayerProps
   } | null>(null);
   const autoplayAttemptedRef = useRef(false);
 
-  useEffect(() => {
-    // Check if YouTube API script is already loaded
-    if (window.YT && window.YT.Player) {
-      initializePlayer();
-      return;
-    }
-
-    // Check if script is already being loaded
-    const existingScript = document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
-    if (existingScript) {
-      window.onYouTubeIframeAPIReady = initializePlayer;
-      return;
-    }
-
-    // Load YouTube IFrame API
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName("script")[0];
-    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-
-    // Initialize player when API is ready
-    window.onYouTubeIframeAPIReady = initializePlayer;
-  }, []);
+  // Expose play/pause methods to parent via ref
+  useImperativeHandle(ref, () => ({
+    play: () => {
+      if (playerRef.current && isReady) {
+        setHasUserInteracted(true);
+        playerRef.current.unMute();
+        playerRef.current.playVideo();
+      }
+    },
+    pause: () => {
+      if (playerRef.current && isReady) {
+        playerRef.current.pauseVideo();
+      }
+    },
+  }), [isReady]);
 
   const initializePlayer = () => {
     if (playerRef.current) return; // Prevent duplicate initialization
@@ -105,11 +102,34 @@ export default function MusicPlayer({ shouldAutoPlay = false }: MusicPlayerProps
     });
   };
 
+  useEffect(() => {
+    // Check if YouTube API script is already loaded
+    if (window.YT && window.YT.Player) {
+      initializePlayer();
+      return;
+    }
+
+    // Check if script is already being loaded
+    const existingScript = document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
+    if (existingScript) {
+      window.onYouTubeIframeAPIReady = initializePlayer;
+      return;
+    }
+
+    // Load YouTube IFrame API
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+    // Initialize player when API is ready
+    window.onYouTubeIframeAPIReady = initializePlayer;
+  }, []);
+
   // Auto-play when shouldAutoPlay prop changes to true
   useEffect(() => {
     if (shouldAutoPlay && isReady && playerRef.current && !autoplayAttemptedRef.current) {
       autoplayAttemptedRef.current = true;
-      setHasUserInteracted(true);
 
       // Try to play - mobile browsers may allow after user interaction
       const attemptPlay = async () => {
@@ -188,4 +208,8 @@ export default function MusicPlayer({ shouldAutoPlay = false }: MusicPlayerProps
       </button>
     </>
   );
-}
+});
+
+MusicPlayer.displayName = "MusicPlayer";
+
+export default MusicPlayer;

@@ -15,12 +15,16 @@ export default function WelcomeOverlay({
   const [isClosing, setIsClosing] = useState(false);
 
   const handleOpen = () => {
+    // Call onOpen IMMEDIATELY to ensure music can start in the user gesture event
+    // This is critical for iOS Safari autoplay
+    onOpen();
+    
+    // Then start the closing animation
     setIsClosing(true);
 
-    // Wait for animation to complete before calling onOpen
+    // Wait for animation to complete before removing from DOM
     setTimeout(() => {
       setIsOpen(false);
-      onOpen();
     }, 800); // Match animation duration
   };
 
