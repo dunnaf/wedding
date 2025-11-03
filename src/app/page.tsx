@@ -16,8 +16,12 @@ export default function Home() {
   const [guestName, setGuestName] = useState("Guest");
   const [mounted, setMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showVerseSection, setShowVerseSection] = useState(false);
+  const [showBrideGroomSection, setShowBrideGroomSection] = useState(false);
   const musicPlayerRef = useRef<MusicPlayerRef>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
+  const verseSectionRef = useRef<HTMLDivElement>(null);
+  const brideGroomSectionRef = useRef<HTMLDivElement>(null);
 
   // Parallax effect using Lenis
   useLenis(({ scroll }) => {
@@ -29,6 +33,13 @@ export default function Home() {
   });
 
   useEffect(() => {
+    // Prevent browser scroll restoration and scroll to top on page load/refresh
+    if (history.scrollRestoration) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+
     const params = new URLSearchParams(window.location.search);
     const name = params.get("name");
     if (name) {
@@ -36,6 +47,62 @@ export default function Home() {
       setGuestName(name);
     }
     setMounted(true);
+  }, []);
+
+  // Intersection Observer for verse section animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShowVerseSection(true);
+          }
+        });
+      },
+      {
+        threshold: 0.7, // Trigger when 20% of the section is visible
+        rootMargin: "0px",
+      }
+    );
+
+    const currentRef = verseSectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
+  // Intersection Observer for bride and groom section animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShowBrideGroomSection(true);
+          }
+        });
+      },
+      {
+        threshold: 0.7, // Trigger when 20% of the section is visible
+        rootMargin: "0px",
+      }
+    );
+
+    const currentRef = brideGroomSectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
   }, []);
 
   const handleOverlayOpen = () => {
@@ -230,7 +297,10 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative w-full h-screen flex flex-col md:justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white">
+              <div
+                ref={verseSectionRef}
+                className="relative w-full h-screen flex flex-col md:justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white"
+              >
                 <div className="md:hidden w-full flex justify-center mb-4">
                   <div className="w-fit flex justify-center p-4">
                     <Image
@@ -239,12 +309,18 @@ export default function Home() {
                       width={100}
                       height={100}
                       className={
-                        showContent ? "animate-fade-in delay-100" : "opacity-0"
+                        showVerseSection
+                          ? "animate-fade-in delay-100"
+                          : "opacity-0"
                       }
                     />
                   </div>
                 </div>
-                <div className="absolute top-4 md:top-20 left-0 md:left-20 transform rotate-90">
+                <div
+                  className={`absolute top-4 md:top-20 left-0 md:left-20 transform rotate-90 transition-opacity duration-700 ${
+                    showVerseSection ? "animate-fade-in delay-100" : "opacity-0"
+                  }`}
+                >
                   <Image
                     src="/angle-cal.png"
                     alt="Caligraphic Angle"
@@ -253,7 +329,11 @@ export default function Home() {
                     className="w-[100px] md:w-[200px] h-[100px] md:h-[200px]"
                   />
                 </div>
-                <div className="absolute bottom-4 md:bottom-20 left-2 md:left-20">
+                <div
+                  className={`absolute bottom-4 md:bottom-20 left-2 md:left-20 transition-opacity duration-700 ${
+                    showVerseSection ? "animate-fade-in delay-200" : "opacity-0"
+                  }`}
+                >
                   <Image
                     src="/angle-cal.png"
                     alt="Caligraphic Angle"
@@ -262,7 +342,11 @@ export default function Home() {
                     className="w-[100px] md:w-[200px] h-[100px] md:h-[200px]"
                   />
                 </div>
-                <div className="absolute top-4 md:top-20 right-0 md:right-20 transform rotate-90">
+                <div
+                  className={`absolute top-4 md:top-20 right-0 md:right-20 transform rotate-90 transition-opacity duration-700 ${
+                    showVerseSection ? "animate-fade-in delay-100" : "opacity-0"
+                  }`}
+                >
                   <Image
                     src="/angle-cal.png"
                     alt="Caligraphic Angle"
@@ -271,7 +355,11 @@ export default function Home() {
                     className="w-[100px] md:w-[200px] h-[100px] md:h-[200px] scale-y-[-1]"
                   />
                 </div>
-                <div className="absolute bottom-4 md:bottom-20 right-2 md:right-20 transform">
+                <div
+                  className={`absolute bottom-4 md:bottom-20 right-2 md:right-20 transform transition-opacity duration-700 ${
+                    showVerseSection ? "animate-fade-in delay-200" : "opacity-0"
+                  }`}
+                >
                   <Image
                     src="/angle-cal.png"
                     alt="Caligraphic Angle"
@@ -281,8 +369,14 @@ export default function Home() {
                   />
                 </div>
                 <div className="flex flex-col justify-center items-center gap-16">
-                  <div className="w-full md:w-1/2">
-                    <div className="text-center text-sm md:text-base noto-naskh-arabic text-gray-600 text-right">
+                  <div
+                    className={`w-full md:w-1/2 ${
+                      showVerseSection
+                        ? "animate-fade-in delay-300"
+                        : "opacity-0"
+                    }`}
+                  >
+                    <div className="text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right">
                       وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِّنْ أَنفُسِكُمْ
                       أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم
                       مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ
@@ -310,8 +404,14 @@ export default function Home() {
                       terdapat tanda-tanda bagi kaum yang berpikir.”
                     </div>
                   </div>
-                  <div className="w-full md:w-1/2">
-                    <div className="text-center text-sm md:text-base noto-naskh-arabic text-gray-600 text-right">
+                  <div
+                    className={`w-full md:w-1/2 ${
+                      showVerseSection
+                        ? "animate-fade-in delay-500"
+                        : "opacity-0"
+                    }`}
+                  >
+                    <div className="text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right">
                       وَالَّذِينَ يَقُولُونَ رَبَّنَا هَبْ لَنَا مِنْ
                       أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ
                       وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا
@@ -338,11 +438,20 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative w-full h-screen flex flex-col justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white">
+              <div
+                ref={brideGroomSectionRef}
+                className="relative w-full h-screen flex flex-col justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white"
+              >
                 <div className="w-full md:w-1/2 flex flex-col gap-4 md:gap-8">
-                  <div className="flex flex-col gap-4 md:gap-6">
+                  <div
+                    className={`flex flex-col gap-4 md:gap-6 ${
+                      showBrideGroomSection
+                        ? "animate-fade-in delay-100"
+                        : "opacity-0"
+                    }`}
+                  >
                     <div className="flex flex-col gap-4">
-                      <div className="text-base md:text-lg noto-naskh-arabic text-gray-600 text-right font-bold">
+                      <div className="text-base md:text-xl noto-naskh-arabic text-gray-600 text-right font-bold">
                         بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ
                       </div>
                       <div className="text-xs md:text-base ubuntu text-gray-600 font-light">
@@ -368,7 +477,13 @@ export default function Home() {
                       className="text-4xl md:text-6xl dancing-script font-bold"
                     />
                   </div>
-                  <div className="w-full h-[160px] flex justify-center items-center overflow-hidden">
+                  <div
+                    className={`w-full h-[160px] flex justify-center items-center overflow-hidden ${
+                      showBrideGroomSection
+                        ? "animate-fade-in delay-400"
+                        : "opacity-0"
+                    }`}
+                  >
                     <Image
                       src="/love.png"
                       alt="Love"
@@ -377,7 +492,13 @@ export default function Home() {
                       className="w-[250px] h-[250px] object-cover"
                     />
                   </div>
-                  <div className="flex flex-col items-end gap-4 md:gap-6">
+                  <div
+                    className={`flex flex-col items-end gap-4 md:gap-6 ${
+                      showBrideGroomSection
+                        ? "animate-fade-in delay-500"
+                        : "opacity-0"
+                    }`}
+                  >
                     <ShinyText
                       text="Khoirun Nisa Amarsya"
                       className="text-4xl md:text-6xl dancing-script font-bold text-right"
@@ -387,7 +508,13 @@ export default function Home() {
                       <span className=" font-bold">Raeni</span>.
                     </div>
                   </div>
-                  <div className="flex justify-center py-4">
+                  <div
+                    className={`flex justify-center py-4 ${
+                      showBrideGroomSection
+                        ? "animate-fade-in delay-600"
+                        : "opacity-0"
+                    }`}
+                  >
                     <div className="relative w-5/12 md:w-6/12 h-[1px] bg-gray-600">
                       <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                     </div>
@@ -395,7 +522,13 @@ export default function Home() {
                       <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                     </div>
                   </div>
-                  <div className="text-lg md:text-xl dancing-script text-gray-600 text-center font-bold">
+                  <div
+                    className={`text-lg md:text-xl dancing-script text-gray-600 text-center font-bold ${
+                      showBrideGroomSection
+                        ? "animate-fade-in delay-700"
+                        : "opacity-0"
+                    }`}
+                  >
                     Cinta sederhana, bahagia hingga surga. 💞
                   </div>
                 </div>
