@@ -282,7 +282,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col justify-center items-center gap-16">
                   <div className="w-full md:w-1/2">
-                    <div className="text-center text-lg md:text-xl dancing-script text-gray-600 text-right">
+                    <div className="text-center text-sm md:text-base dancing-script text-gray-600 text-right">
                       وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِّنْ أَنفُسِكُمْ
                       أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم
                       مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ
@@ -311,7 +311,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="w-full md:w-1/2">
-                    <div className="text-center text-lg md:text-xl dancing-script text-gray-600 text-right">
+                    <div className="text-center text-sm md:text-base dancing-script text-gray-600 text-right">
                       وَالَّذِينَ يَقُولُونَ رَبَّنَا هَبْ لَنَا مِنْ
                       أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ
                       وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا
