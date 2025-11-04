@@ -2,9 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 
-// Export drag handle height for use in other components
-export const DRAG_HANDLE_HEIGHT = 60;
-
 interface EventDetailsModalProps {
   showContent: boolean;
   isOpen: boolean;
@@ -24,7 +21,6 @@ export default function EventDetailsModal({
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [backdropVisible, setBackdropVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  const dragHandleHeight = DRAG_HANDLE_HEIGHT; // Height of the drag handle area
 
   // Show modal partially after content is shown
   useEffect(() => {
@@ -77,10 +73,8 @@ export default function EventDetailsModal({
     const currentY = e.touches[0].clientY;
     const diff = currentY - startY;
 
-    // Only allow dragging down when modal is open, or up when closed
+    // Only allow dragging down when modal is open
     if (isOpen && diff > 0) {
-      setTranslateY(diff);
-    } else if (!isOpen && diff < 0) {
       setTranslateY(diff);
     }
   };
@@ -88,11 +82,9 @@ export default function EventDetailsModal({
   const handleTouchEnd = () => {
     setIsDragging(false);
 
-    // Threshold for toggling (100px)
+    // Threshold for closing (100px drag down)
     if (isOpen && translateY > 100) {
       onOpenChange(false);
-    } else if (!isOpen && translateY < -100) {
-      onOpenChange(true);
     }
 
     setTranslateY(0);
@@ -123,11 +115,9 @@ export default function EventDetailsModal({
         style={{
           bottom: 0,
           transform: `translateY(${
-            !isVisible
+            !isVisible || !isOpen
               ? "100%"
-              : isOpen
-              ? `calc(0% + ${translateY}px)`
-              : `calc(100% - ${dragHandleHeight}px + ${translateY}px)`
+              : `calc(0% + ${translateY}px)`
           })`,
         }}
         onTouchStart={handleTouchStart}
@@ -141,7 +131,7 @@ export default function EventDetailsModal({
         >
           <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-2" />
           <div className="text-sm uppercase ubuntu text-gray-600 font-semibold">
-            {isOpen ? "Geser ke Bawah" : "Detail Acara"}
+            Geser ke Bawah
           </div>
         </div>
 

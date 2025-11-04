@@ -3,21 +3,43 @@
 import ShinyText from "@/components/ShinyText";
 import MusicPlayer, { MusicPlayerRef } from "@/components/MusicPlayer";
 import WelcomeOverlay from "@/components/WelcomeOverlay";
-import EventDetailsModal, {
-  DRAG_HANDLE_HEIGHT,
-} from "@/components/EventDetailsModal";
+import EventDetailsModal from "@/components/EventDetailsModal";
+import FloatingFlowers from "@/components/FloatingFlowers";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
 
+interface Firefly {
+  id: number;
+  left: number;
+  top: number;
+  delay: number;
+  duration: number;
+  size: number;
+}
+
+// Generate fireflies with random positions and animation delays
+const generateFireflies = (count: number): Firefly[] => {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i,
+    left: Math.random() * 100,
+    top: Math.random() * 100,
+    delay: Math.random() * 5,
+    duration: 3 + Math.random() * 4,
+    size: 2 + Math.random() * 3,
+  }));
+};
+
 export default function Home() {
   const [musicStarted, setMusicStarted] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [showMusicButton, setShowMusicButton] = useState(false);
   const [guestName, setGuestName] = useState("Guest");
   const [mounted, setMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showVerseSection, setShowVerseSection] = useState(false);
   const [showBrideGroomSection, setShowBrideGroomSection] = useState(false);
+  const [fireflies, setFireflies] = useState<Firefly[]>([]);
   const musicPlayerRef = useRef<MusicPlayerRef>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
   const verseSectionRef = useRef<HTMLDivElement>(null);
@@ -47,6 +69,12 @@ export default function Home() {
       setGuestName(name);
     }
     setMounted(true);
+  }, []);
+
+  // Generate fireflies on mount
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFireflies(generateFireflies(25));
   }, []);
 
   // Prevent scrolling when overlay is active
@@ -136,25 +164,50 @@ export default function Home() {
     setTimeout(() => {
       setShowContent(true);
     }, 200);
+    // Show music button after overlay animation completes (800ms)
+    setTimeout(() => {
+      setShowMusicButton(true);
+    }, 800);
   };
 
   return (
     <>
-      <div className="w-screen h-screen">
-        {mounted && (
-          <>
-            <WelcomeOverlay onOpen={handleOverlayOpen}>
-              <Image
-                src="/logo.png"
-                alt="Logo"
-                width={200}
-                height={200}
-                className="w-[150px] md:w-[200px] h-[150px] md:h-[200px] animate-fade-in"
-              />
-            </WelcomeOverlay>
+      <div className="w-screen min-h-screen">
+        <WelcomeOverlay onOpen={handleOverlayOpen}>
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={200}
+            height={200}
+            className="w-[150px] md:w-[200px] h-[150px] md:h-[200px] animate-fade-in"
+          />
+        </WelcomeOverlay>
 
-            <MusicPlayer ref={musicPlayerRef} shouldAutoPlay={musicStarted} />
-          </>
+        {mounted && (
+          <MusicPlayer
+            ref={musicPlayerRef}
+            shouldAutoPlay={musicStarted}
+            show={showMusicButton}
+          />
+        )}
+
+        {/* Floating Event Details Button - Mobile Only */}
+        {showContent && (
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="md:hidden fixed bottom-6 right-6 z-50 w-15 h-15 bg-black hover:bg-gray-900 text-white shadow-lg hover:shadow-xl rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 animate-fade-in delay-1200"
+            aria-label="Lihat detail acara"
+          >
+            {/* Heart icon - represents wedding/love */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-7 h-7 animate-heart-pulse"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+          </button>
         )}
 
         <div className="relative flex flex-col md:flex-row w-full h-full">
@@ -247,19 +300,12 @@ export default function Home() {
                 <div
                   ref={parallaxRef}
                   className="absolute top-0 left-0 w-full h-[120%] bg-[url('/bg.jpg')] bg-cover bg-center will-change-transform"
-                >
-                  <div className="block md:hidden absolute top-2 left-0 w-full h-[2px] bg-white"></div>
-                  <div className="hidden md:block absolute top-0 left-2 w-[2px] h-full bg-white"></div>
-                  <div
-                    className="block md:hidden absolute left-0 w-full h-[2px] bg-white transition-all duration-500 delay-750 ease-in-out"
-                    style={{
-                      bottom:
-                        showContent && isModalOpen === false
-                          ? `calc(${DRAG_HANDLE_HEIGHT}px + 8px)`
-                          : "8px",
-                    }}
-                  ></div>
-                </div>
+                ></div>
+                {/* Floating Flowers Animation */}
+                {showContent && <FloatingFlowers />}
+                <div className="block md:hidden absolute top-2 left-0 w-full h-[2px] bg-white"></div>
+                <div className="hidden md:block absolute top-0 left-2 w-[2px] h-full bg-white"></div>
+                <div className="block md:hidden absolute bottom-2 left-0 w-full h-[2px] bg-white z-10"></div>
                 <div className="md:hidden absolute top-20 w-full flex justify-center">
                   <div className="w-fit flex justify-center p-4">
                     <Image
@@ -268,7 +314,7 @@ export default function Home() {
                       width={100}
                       height={100}
                       className={
-                        showContent ? "animate-fade-in delay-100" : "opacity-0"
+                        showContent ? "animate-fade-in delay-200" : "opacity-0"
                       }
                     />
                   </div>
@@ -277,7 +323,7 @@ export default function Home() {
                   <div className="flex flex-col items-center gap-6 md:gap-8">
                     <div
                       className={`text-2xl md:text-4xl dancing-script text-center ${
-                        showContent ? "animate-fade-in delay-300" : "opacity-0"
+                        showContent ? "animate-fade-in delay-400" : "opacity-0"
                       }`}
                     >
                       Kepada Yth.
@@ -286,7 +332,7 @@ export default function Home() {
                       <div
                         className={
                           showContent
-                            ? "animate-fade-in delay-400"
+                            ? "animate-fade-in delay-600"
                             : "opacity-0"
                         }
                       >
@@ -300,19 +346,11 @@ export default function Home() {
                     )}
                     <div
                       className={`text-2xl md:text-4xl dancing-script text-center ${
-                        showContent ? "animate-fade-in delay-500" : "opacity-0"
+                        showContent ? "animate-fade-in delay-800" : "opacity-0"
                       }`}
                     >
                       Izinkan kami berbagi kisah cinta di hari istimewa kami.
                     </div>
-                    <button
-                      onClick={() => setIsModalOpen(true)}
-                      className={`px-10 py-3 bg-white hover:bg-gray-100 text-black rounded-full text-md dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 md:hidden ${
-                        showContent ? "animate-fade-in delay-600" : "opacity-0"
-                      }`}
-                    >
-                      Lihat Detail
-                    </button>
                   </div>
                 </div>
               </div>
@@ -320,6 +358,24 @@ export default function Home() {
                 ref={verseSectionRef}
                 className="relative w-full h-screen flex flex-col md:justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white"
               >
+                {/* Fireflies Animation */}
+                {fireflies.map((firefly) => (
+                  <div
+                    key={`verse-${firefly.id}`}
+                    className="absolute rounded-full bg-yellow-400 opacity-0 animate-firefly"
+                    style={{
+                      left: `${firefly.left}%`,
+                      top: `${firefly.top}%`,
+                      width: `${firefly.size}px`,
+                      height: `${firefly.size}px`,
+                      animationDelay: `${firefly.delay}s`,
+                      animationDuration: `${firefly.duration}s`,
+                      boxShadow: `0 0 ${firefly.size * 3}px ${
+                        firefly.size
+                      }px rgba(251, 191, 36, 0.3)`,
+                    }}
+                  />
+                ))}
                 <div className="md:hidden w-full flex justify-center mb-4">
                   <div className="w-fit flex justify-center p-4">
                     <Image
@@ -501,6 +557,24 @@ export default function Home() {
                 ref={brideGroomSectionRef}
                 className="relative w-full h-screen flex flex-col justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white"
               >
+                {/* Fireflies Animation */}
+                {fireflies.map((firefly) => (
+                  <div
+                    key={`bridegroom-${firefly.id}`}
+                    className="absolute rounded-full bg-yellow-400 opacity-0 animate-firefly"
+                    style={{
+                      left: `${firefly.left}%`,
+                      top: `${firefly.top}%`,
+                      width: `${firefly.size}px`,
+                      height: `${firefly.size}px`,
+                      animationDelay: `${firefly.delay}s`,
+                      animationDuration: `${firefly.duration}s`,
+                      boxShadow: `0 0 ${firefly.size * 3}px ${
+                        firefly.size
+                      }px rgba(251, 191, 36, 0.3)`,
+                    }}
+                  />
+                ))}
                 <div className="w-full md:w-1/2 flex flex-col gap-4 md:gap-8">
                   <div className={`flex flex-col gap-4 md:gap-6 `}>
                     <div className="flex flex-col gap-4">
@@ -627,8 +701,47 @@ export default function Home() {
                 </div>
               </div>
               <div className="relative w-full h-screen flex flex-col overflow-hidden bg-transparent">
-                <div className="absolute top-0 left-0 w-full h-[30vh] bg-white"></div>
-                <div className="absolute bottom-0 left-0 w-full h-[30vh] bg-white py-8 md:py-24 px-4 md:px-12"></div>
+                <div className="relative w-full h-1/3 bg-white overflow-hidden">
+                  {/* Fireflies Animation */}
+                  {fireflies.map((firefly) => (
+                    <div
+                      key={`closing-${firefly.id}`}
+                      className="absolute rounded-full bg-yellow-400 opacity-0 animate-firefly"
+                      style={{
+                        left: `${firefly.left}%`,
+                        top: `${firefly.top}%`,
+                        width: `${firefly.size}px`,
+                        height: `${firefly.size}px`,
+                        animationDelay: `${firefly.delay}s`,
+                        animationDuration: `${firefly.duration}s`,
+                        boxShadow: `0 0 ${firefly.size * 3}px ${
+                          firefly.size
+                        }px rgba(251, 191, 36, 0.3)`,
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="w-full h-1/3 bg-transparent"></div>
+                <div className="relative w-full h-1/3 bg-white py-8 md:py-24 px-4 md:px-12 overflow-hidden">
+                  {/* Fireflies Animation */}
+                  {fireflies.map((firefly) => (
+                    <div
+                      key={`closing-${firefly.id}`}
+                      className="absolute rounded-full bg-yellow-400 opacity-0 animate-firefly"
+                      style={{
+                        left: `${firefly.left}%`,
+                        top: `${firefly.top}%`,
+                        width: `${firefly.size}px`,
+                        height: `${firefly.size}px`,
+                        animationDelay: `${firefly.delay}s`,
+                        animationDuration: `${firefly.duration}s`,
+                        boxShadow: `0 0 ${firefly.size * 3}px ${
+                          firefly.size
+                        }px rgba(251, 191, 36, 0.3)`,
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </ReactLenis>

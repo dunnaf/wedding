@@ -34,6 +34,7 @@ declare global {
 
 interface MusicPlayerProps {
   shouldAutoPlay?: boolean;
+  show?: boolean;
 }
 
 export interface MusicPlayerRef {
@@ -41,7 +42,7 @@ export interface MusicPlayerRef {
   pause: () => void;
 }
 
-const MusicPlayer = forwardRef<MusicPlayerRef, MusicPlayerProps>(({ shouldAutoPlay = false }, ref) => {
+const MusicPlayer = forwardRef<MusicPlayerRef, MusicPlayerProps>(({ shouldAutoPlay = false, show = false }, ref) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
@@ -190,14 +191,16 @@ const MusicPlayer = forwardRef<MusicPlayerRef, MusicPlayerProps>(({ shouldAutoPl
       <button
         onClick={togglePlay}
         disabled={!isReady}
-        className="fixed bottom-20 md:bottom-6 right-6 z-50 w-14 h-14 md:w-16 md:h-16 bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg hover:shadow-xl rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 animate-fade-in delay-800 group disabled:opacity-50"
+        className={`fixed bottom-24 md:bottom-6 right-[35px] z-50 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg hover:shadow-xl rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 disabled:opacity-50 opacity-0 ${
+          show ? "animate-fade-in delay-400" : ""
+        }`}
         aria-label={isPlaying ? "Jeda musik" : "Putar musik"}
       >
         {isPlaying ? (
           // Pause Icon
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6 md:w-7 md:h-7 text-gray-800"
+            className="w-5 h-5 md:w-6 md:h-6 text-gray-800"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
@@ -207,17 +210,12 @@ const MusicPlayer = forwardRef<MusicPlayerRef, MusicPlayerProps>(({ shouldAutoPl
           // Play Icon
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6 md:w-7 md:h-7 text-gray-800 ml-1"
+            className="w-5 h-5 md:w-6 md:h-6 text-gray-800 ml-1"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
             <path d="M8 5v14l11-7z" />
           </svg>
-        )}
-        
-        {/* Animated ripple effect when playing */}
-        {isPlaying && (
-          <span className="absolute inset-0 rounded-full border-2 border-gray-800 animate-ping opacity-75"></span>
         )}
       </button>
     </>

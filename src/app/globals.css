@@ -261,3 +261,211 @@
     linear-gradient(#000000, #000000) right bottom no-repeat;
   background-size: 3px 30px, 30px 3px;
 }
+
+/* Fireflies Animation */
+@keyframes firefly {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) scale(0.5);
+  }
+  25% {
+    opacity: 0.8;
+    transform: translateY(-30px) translateX(15px) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-60px) translateX(-10px) scale(1.2);
+  }
+  75% {
+    opacity: 0.6;
+    transform: translateY(-90px) translateX(20px) scale(0.9);
+  }
+}
+
+.animate-firefly {
+  animation: firefly infinite ease-in-out;
+}
+
+/* Heart Pulse Animation */
+@keyframes heartPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.1);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.15);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+.animate-heart-pulse {
+  animation: heartPulse 2s ease-in-out infinite;
+}
+
+/* Floating Flowers Animations - Constant Speed with Swaying */
+@keyframes sway {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(15px);
+  }
+  75% {
+    transform: translateX(-15px);
+  }
+}
+
+.animate-sway {
+  animation: sway 4s infinite ease-in-out;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.7;
+  }
+  10%, 90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatDown {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.7;
+  }
+  10%, 90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(100vh) rotate(-360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatLeft {
+  0% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 0.7;
+  }
+  10%, 90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(-100vw) rotate(-360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatRight {
+  0% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 0.7;
+  }
+  10%, 90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(100vw) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatDiagonalUpRight {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.7;
+  }
+  10%, 90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(100vw, -100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatDiagonalUpLeft {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.7;
+  }
+  10%, 90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-100vw, -100vh) rotate(-360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatDiagonalDownRight {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.7;
+  }
+  10%, 90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(100vw, 100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatDiagonalDownLeft {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.7;
+  }
+  10%, 90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-100vw, 100vh) rotate(-360deg);
+    opacity: 0;
+  }
+}
+
+.animate-float-up {
+  animation: floatUp infinite linear;
+}
+
+.animate-float-down {
+  animation: floatDown infinite linear;
+}
+
+.animate-float-left {
+  animation: floatLeft infinite linear;
+}
+
+.animate-float-right {
+  animation: floatRight infinite linear;
+}
+
+.animate-float-diagonal-up-right {
+  animation: floatDiagonalUpRight infinite linear;
+}
+
+.animate-float-diagonal-up-left {
+  animation: floatDiagonalUpLeft infinite linear;
+}
+
+.animate-float-diagonal-down-right {
+  animation: floatDiagonalDownRight infinite linear;
+}
+
+.animate-float-diagonal-down-left {
+  animation: floatDiagonalDownLeft infinite linear;
+}
