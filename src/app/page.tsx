@@ -73,13 +73,17 @@ export default function Home() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            // Show content when 30% or more is visible
             setShowVerseSection(true);
+          } else if (!entry.isIntersecting) {
+            // Hide content when section is completely out of view
+            setShowVerseSection(false);
           }
         });
       },
       {
-        threshold: 0.7, // Trigger when 20% of the section is visible
+        threshold: [0, 0.5], // Track when section enters/exits and when 30% is visible
         rootMargin: "0px",
       }
     );
@@ -101,13 +105,17 @@ export default function Home() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            // Show content when 30% or more is visible
             setShowBrideGroomSection(true);
+          } else if (!entry.isIntersecting) {
+            // Hide content when section is completely out of view
+            setShowBrideGroomSection(false);
           }
         });
       },
       {
-        threshold: 0.7, // Trigger when 20% of the section is visible
+        threshold: [0, 0.5], // Track when section enters/exits and when 30% is visible
         rootMargin: "0px",
       }
     );
@@ -265,7 +273,7 @@ export default function Home() {
               syncTouch: true,
               syncTouchLerp: 0.15,
               touchInertiaExponent: 2,
-              touchMultiplier: 0.5,
+              touchMultiplier: 2,
             }}
           >
             <div className="relative w-full md:w-7/12 xl:w-9/12">
