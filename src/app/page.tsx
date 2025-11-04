@@ -32,6 +32,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [hasSubmittedBefore, setHasSubmittedBefore] = useState(false);
 
   // Parallax effect using Lenis
   useLenis(({ scroll }) => {
@@ -53,10 +54,23 @@ export default function Home() {
     const params = new URLSearchParams(window.location.search);
     const name = params.get("name");
     if (name) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setGuestName(name);
       // Auto-populate the form field "Nama Lengkap" with URL parameter
       setFullName(name);
+      
+      // Check if this guest has already submitted
+      const submissionKey = `rsvp_submitted_${name.toLowerCase().replace(/\s+/g, '_')}`;
+      const previousSubmission = localStorage.getItem(submissionKey);
+      
+      if (previousSubmission) {
+        const submissionData = JSON.parse(previousSubmission);
+        setHasSubmittedBefore(true);
+        // Pre-fill form with previous submission
+        setFullName(submissionData.fullName);
+        setCanAttend(submissionData.canAttend);
+        setNumberOfPersons(submissionData.numberOfPersons);
+        setMessage(submissionData.message);
+      }
     }
     setMounted(true);
   }, []);
@@ -222,6 +236,7 @@ export default function Home() {
         canAttend: canAttend === "yes" ? "Hadir" : "Tidak Hadir",
         numberOfPersons: canAttend === "yes" ? numberOfPersons : "0",
         message,
+        isUpdate: hasSubmittedBefore, // Flag to indicate if this is an update
       };
 
       // Send to Google Sheets via Apps Script
@@ -234,18 +249,26 @@ export default function Home() {
         body: JSON.stringify(formData),
       });
 
+      // Save to localStorage to prevent duplicates
+      const submissionKey = `rsvp_submitted_${fullName.toLowerCase().replace(/\s+/g, '_')}`;
+      localStorage.setItem(
+        submissionKey,
+        JSON.stringify({
+          fullName,
+          canAttend,
+          numberOfPersons,
+          message,
+          timestamp: new Date().toISOString(),
+        })
+      );
+
       // Note: With no-cors mode, we can't read the response
       // but if no error is thrown, it likely succeeded
       setSubmitSuccess(true);
+      setHasSubmittedBefore(true);
+      
       setTimeout(() => {
         setSubmitSuccess(false);
-        // Reset form but keep the guest name from URL
-        const params = new URLSearchParams(window.location.search);
-        const name = params.get("name");
-        setFullName(name || "");
-        setCanAttend("");
-        setNumberOfPersons("1");
-        setMessage("");
       }, 3000);
     } catch (error) {
       console.error("Error submitting RSVP:", error);
@@ -766,8 +789,22 @@ export default function Home() {
                         showFormSection ? "animate-fade-in" : "opacity-0"
                       }`}
                     >
-                      Konfirmasi Kehadiran
+                      {hasSubmittedBefore
+                        ? "Perbarui Konfirmasi Kehadiran"
+                        : "Konfirmasi Kehadiran"}
                     </div>
+                    {hasSubmittedBefore && (
+                      <div
+                        className={`text-xs md:text-sm ubuntu text-center text-blue-600 bg-blue-50 py-2 px-3 rounded-lg ${
+                          showFormSection
+                            ? "animate-fade-in delay-100"
+                            : "opacity-0"
+                        }`}
+                      >
+                        ℹ️ Anda sudah pernah mengirim RSVP. Anda dapat memperbarui
+                        konfirmasi kehadiran Anda di bawah ini.
+                      </div>
+                    )}
 
                     {/* Full Name Input - Full Width */}
                     <div
@@ -1047,16 +1084,24 @@ export default function Home() {
                         }`}
                       >
                         {submitSuccess
-                          ? "✓ Terkirim!"
+                          ? hasSubmittedBefore
+                            ? "✓ Diperbarui!"
+                            : "✓ Terkirim!"
                           : isSubmitting
-                          ? "Mengirim..."
+                          ? hasSubmittedBefore
+                            ? "Memperbarui..."
+                            : "Mengirim..."
+                          : hasSubmittedBefore
+                          ? "Perbarui RSVP"
                           : "Kirim RSVP"}
                       </button>
                     </div>
 
                     {submitSuccess && (
                       <div className="text-center text-sm text-green-600 ubuntu animate-fade-in">
-                        Konfirmasi diterima~ Terima kasih! ✨
+                        {hasSubmittedBefore
+                          ? "Konfirmasi berhasil diperbarui~ Terima kasih! ✨"
+                          : "Konfirmasi diterima~ Terima kasih! ✨"}
                       </div>
                     )}
                   </div>
