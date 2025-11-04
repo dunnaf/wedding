@@ -263,9 +263,9 @@ export default function Home() {
               duration: 1.2,
               smoothWheel: true,
               syncTouch: true,
-              syncTouchLerp: 0.075,
-              touchInertiaExponent: 35,
-              touchMultiplier: 2,
+              syncTouchLerp: 0.15,
+              touchInertiaExponent: 2,
+              touchMultiplier: 0.5,
             }}
           >
             <div className="relative w-full md:w-7/12 xl:w-9/12">
