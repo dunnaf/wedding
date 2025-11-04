@@ -57,11 +57,13 @@ export default function Home() {
       setGuestName(name);
       // Auto-populate the form field "Nama Lengkap" with URL parameter
       setFullName(name);
-      
+
       // Check if this guest has already submitted
-      const submissionKey = `rsvp_submitted_${name.toLowerCase().replace(/\s+/g, '_')}`;
+      const submissionKey = `rsvp_submitted_${name
+        .toLowerCase()
+        .replace(/\s+/g, "_")}`;
       const previousSubmission = localStorage.getItem(submissionKey);
-      
+
       if (previousSubmission) {
         const submissionData = JSON.parse(previousSubmission);
         setHasSubmittedBefore(true);
@@ -209,7 +211,14 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!fullName || !canAttend || !message) {
+    if (!fullName) {
+      alert(
+        "Nama tidak ditemukan. Pastikan Anda mengakses undangan melalui link personal Anda."
+      );
+      return;
+    }
+
+    if (!canAttend || !message) {
       alert("Mohon lengkapi semua kolom yang diperlukan");
       return;
     }
@@ -250,7 +259,9 @@ export default function Home() {
       });
 
       // Save to localStorage to prevent duplicates
-      const submissionKey = `rsvp_submitted_${fullName.toLowerCase().replace(/\s+/g, '_')}`;
+      const submissionKey = `rsvp_submitted_${fullName
+        .toLowerCase()
+        .replace(/\s+/g, "_")}`;
       localStorage.setItem(
         submissionKey,
         JSON.stringify({
@@ -266,7 +277,7 @@ export default function Home() {
       // but if no error is thrown, it likely succeeded
       setSubmitSuccess(true);
       setHasSubmittedBefore(true);
-      
+
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
@@ -781,145 +792,12 @@ export default function Home() {
                 ref={formSectionRef}
                 className="relative w-full h-screen flex flex-col overflow-hidden bg-transparent"
               >
-                {/* RSVP Form Section */}
-                <div className="relative w-full h-1/3 bg-white overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8">
-                  <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col gap-3">
-                    <div
-                      className={`text-2xl md:text-3xl dancing-script text-center font-bold text-gray-800 ${
-                        showFormSection ? "animate-fade-in" : "opacity-0"
-                      }`}
-                    >
-                      {hasSubmittedBefore
-                        ? "Perbarui Konfirmasi Kehadiran"
-                        : "Konfirmasi Kehadiran"}
-                    </div>
-                    {hasSubmittedBefore && (
-                      <div
-                        className={`text-xs md:text-sm ubuntu text-center text-blue-600 bg-blue-50 py-2 px-3 rounded-lg ${
-                          showFormSection
-                            ? "animate-fade-in delay-100"
-                            : "opacity-0"
-                        }`}
-                      >
-                        ℹ️ Anda sudah pernah mengirim RSVP. Anda dapat memperbarui
-                        konfirmasi kehadiran Anda di bawah ini.
-                      </div>
-                    )}
-
-                    {/* Full Name Input - Full Width */}
-                    <div
-                      className={`flex flex-col gap-1 ${
-                        showFormSection
-                          ? "animate-fade-in delay-200"
-                          : "opacity-0"
-                      }`}
-                    >
-                      <label
-                        htmlFor="fullName"
-                        className="text-xs md:text-sm ubuntu text-gray-700 font-semibold"
-                      >
-                        Nama Lengkap <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="fullName"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu transition-all"
-                        placeholder="Contoh: John Doe"
-                        required
-                      />
-                    </div>
-
-                    {/* Can Attend and Number of Persons - Side by Side */}
-                    <div
-                      className={`flex flex-row gap-2 md:gap-3 ${
-                        showFormSection
-                          ? "animate-fade-in delay-400"
-                          : "opacity-0"
-                      }`}
-                    >
-                      {/* Can Attend Dropdown */}
-                      <div className="flex flex-col gap-1 flex-1">
-                        <label
-                          htmlFor="canAttend"
-                          className="text-xs md:text-sm ubuntu text-gray-700 font-semibold"
-                        >
-                          Konfirmasi Kehadiran{" "}
-                          <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                          id="canAttend"
-                          value={canAttend}
-                          onChange={(e) =>
-                            setCanAttend(e.target.value as "" | "yes" | "no")
-                          }
-                          className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu bg-white transition-all appearance-none cursor-pointer"
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "right 0.5rem center",
-                            backgroundSize: "1.25em 1.25em",
-                            paddingRight: "2rem",
-                          }}
-                          required
-                        >
-                          <option value="" disabled>
-                            Pilih status kehadiran
-                          </option>
-                          <option value="yes">✓ Ya, saya akan hadir</option>
-                          <option value="no">
-                            ✗ Maaf, saya tidak bisa hadir
-                          </option>
-                        </select>
-                      </div>
-
-                      {/* Number of Persons (always visible, disabled when not attending) */}
-                      <div className="flex flex-col gap-1 flex-1">
-                        <label
-                          htmlFor="numberOfPersons"
-                          className="text-xs md:text-sm ubuntu text-gray-700 font-semibold"
-                        >
-                          Jumlah Tamu yang Hadir{" "}
-                          <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                          id="numberOfPersons"
-                          value={numberOfPersons}
-                          onChange={(e) => setNumberOfPersons(e.target.value)}
-                          className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:outline-none ubuntu bg-white transition-all appearance-none ${
-                            canAttend !== "yes"
-                              ? "border-gray-200 text-gray-400 cursor-not-allowed"
-                              : "border-gray-300 focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 cursor-pointer"
-                          }`}
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23${
-                              canAttend !== "yes" ? "9CA3AF" : "374151"
-                            }'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "right 0.5rem center",
-                            backgroundSize: "1.25em 1.25em",
-                            paddingRight: "2rem",
-                          }}
-                          required={canAttend === "yes"}
-                          disabled={canAttend !== "yes"}
-                        >
-                          <option value="1">1 Orang</option>
-                          <option value="2">2 Orang</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Gift Section */}
                 <div className="w-full h-1/3 bg-transparent overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8">
                   <div className="w-full md:w-2/3 lg:w-3/4 xl:w-2/3 flex flex-col gap-3 bg-white/80 backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg">
                     <div
                       className={`text-2xl md:text-3xl dancing-script text-center font-bold text-gray-800 ${
-                        showFormSection
-                          ? "animate-fade-in delay-600"
-                          : "opacity-0"
+                        showFormSection ? "animate-fade-in" : "opacity-0"
                       }`}
                     >
                       Amplop Digital
@@ -927,7 +805,7 @@ export default function Home() {
                     <div
                       className={`text-xs md:text-sm ubuntu text-center text-gray-600 ${
                         showFormSection
-                          ? "animate-fade-in delay-800"
+                          ? "animate-fade-in delay-200"
                           : "opacity-0"
                       }`}
                     >
@@ -938,7 +816,7 @@ export default function Home() {
                     <div
                       className={`flex flex-row gap-2 md:gap-3 ${
                         showFormSection
-                          ? "animate-fade-in delay-1000"
+                          ? "animate-fade-in delay-400"
                           : "opacity-0"
                       }`}
                     >
@@ -1019,17 +897,138 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Message Section */}
-                <div className="relative w-full h-1/3 bg-white overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8">
-                  <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col gap-3">
+                {/* RSVP Form & Message Section - Combined */}
+                <div className="relative w-full h-2/3 bg-white overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8">
+                  <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col gap-4">
                     <div
-                      className={`text-2xl md:text-3xl dancing-script text-center font-bold text-gray-800 ${
+                      className={`text-2xl md:text-3xl dancing-script text-center font-bold text-gray-800 mb-4 md:mb-8 ${
+                        showFormSection
+                          ? "animate-fade-in delay-600"
+                          : "opacity-0"
+                      }`}
+                    >
+                      {hasSubmittedBefore
+                        ? "Perbarui Konfirmasi Kehadiran"
+                        : "Konfirmasi Kehadiran & Ucapan"}
+                    </div>
+                    {!fullName && (
+                      <div
+                        className={`text-xs md:text-sm ubuntu text-amber-700 bg-amber-50 py-2 px-3 rounded-lg border border-amber-200 ${
+                          showFormSection
+                            ? "animate-fade-in delay-800"
+                            : "opacity-0"
+                        }`}
+                      >
+                        ⚠️ Mohon akses undangan melalui link personal yang telah
+                        dikirimkan kepada Anda.
+                      </div>
+                    )}
+
+                    {/* Full Name Input - Full Width */}
+                    <div
+                      className={`flex flex-col gap-1 ${
+                        showFormSection
+                          ? "animate-fade-in delay-1000"
+                          : "opacity-0"
+                      }`}
+                    >
+                      <label
+                        htmlFor="fullName"
+                        className="text-xs md:text-sm ubuntu text-gray-600 font-light"
+                      >
+                        Nama Lengkap <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="fullName"
+                        value={fullName}
+                        disabled
+                        className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg ubuntu transition-all bg-gray-50 text-gray-700 cursor-not-allowed"
+                        placeholder="Nama akan terisi otomatis dari undangan"
+                        required
+                      />
+                      <p className="text-[10px] md:text-xs text-gray-500 ubuntu font-bold">
+                        Ini adalah undangan personal untuk Anda
+                      </p>
+                    </div>
+
+                    {/* Can Attend and Number of Persons - Side by Side */}
+                    <div
+                      className={`flex flex-row gap-2 md:gap-3 ${
                         showFormSection
                           ? "animate-fade-in delay-1200"
                           : "opacity-0"
                       }`}
                     >
-                      Ucapan & Doa
+                      {/* Can Attend Dropdown */}
+                      <div className="flex flex-col gap-1 flex-1">
+                        <label
+                          htmlFor="canAttend"
+                          className="text-xs md:text-sm ubuntu text-gray-600 font-light"
+                        >
+                          Konfirmasi Kehadiran{" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          id="canAttend"
+                          value={canAttend}
+                          onChange={(e) =>
+                            setCanAttend(e.target.value as "" | "yes" | "no")
+                          }
+                          className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu bg-white transition-all appearance-none cursor-pointer"
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "right 0.5rem center",
+                            backgroundSize: "1.25em 1.25em",
+                            paddingRight: "2rem",
+                          }}
+                          required
+                        >
+                          <option value="" disabled>
+                            Pilih status kehadiran
+                          </option>
+                          <option value="yes">✓ Ya, saya akan hadir</option>
+                          <option value="no">
+                            ✗ Maaf, saya tidak bisa hadir
+                          </option>
+                        </select>
+                      </div>
+
+                      {/* Number of Persons (always visible, disabled when not attending) */}
+                      <div className="flex flex-col gap-1 flex-1">
+                        <label
+                          htmlFor="numberOfPersons"
+                          className="text-xs md:text-sm ubuntu text-gray-600 font-light"
+                        >
+                          Jumlah Tamu yang Hadir{" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          id="numberOfPersons"
+                          value={numberOfPersons}
+                          onChange={(e) => setNumberOfPersons(e.target.value)}
+                          className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:outline-none ubuntu bg-white transition-all appearance-none ${
+                            canAttend !== "yes"
+                              ? "border-gray-200 text-gray-400 cursor-not-allowed"
+                              : "border-gray-300 focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 cursor-pointer"
+                          }`}
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23${
+                              canAttend !== "yes" ? "9CA3AF" : "374151"
+                            }'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "right 0.5rem center",
+                            backgroundSize: "1.25em 1.25em",
+                            paddingRight: "2rem",
+                          }}
+                          required={canAttend === "yes"}
+                          disabled={canAttend !== "yes"}
+                        >
+                          <option value="1">1 Orang</option>
+                          <option value="2">2 Orang</option>
+                        </select>
+                      </div>
                     </div>
 
                     {/* Message Textarea */}
@@ -1042,7 +1041,7 @@ export default function Home() {
                     >
                       <label
                         htmlFor="message"
-                        className="text-xs md:text-sm ubuntu text-gray-700 font-semibold"
+                        className="text-xs md:text-sm ubuntu text-gray-600 font-light"
                       >
                         Doa dan Ucapan untuk Kami
                         <span className="text-red-500">*</span>
@@ -1060,25 +1059,19 @@ export default function Home() {
 
                     {/* Buttons - Side by Side */}
                     <div
-                      className={`flex flex-row gap-2 md:gap-3 justify-center ${
+                      className={`flex gap-2 md:gap-3 justify-center items-center mt-4 md:mt-8 ${
                         showFormSection
                           ? "animate-fade-in delay-1600"
                           : "opacity-0"
                       }`}
                     >
                       <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="md:hidden px-6 md:px-8 py-2.5 rounded-full text-base md:text-lg dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-800"
-                      >
-                        Detail Acara
-                      </button>
-                      <button
                         onClick={handleSubmit}
-                        disabled={isSubmitting || submitSuccess}
-                        className={`px-6 md:px-8 py-2.5 rounded-full text-base md:text-lg dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+                        disabled={isSubmitting || submitSuccess || !fullName}
+                        className={`w-fit px-6 md:px-8 py-2.5 rounded-full text-base md:text-lg dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
                           submitSuccess
                             ? "bg-green-600 text-white cursor-not-allowed"
-                            : isSubmitting
+                            : isSubmitting || !fullName
                             ? "bg-gray-400 text-white cursor-not-allowed"
                             : "bg-gray-800 hover:bg-gray-900 text-white"
                         }`}
@@ -1094,6 +1087,12 @@ export default function Home() {
                           : hasSubmittedBefore
                           ? "Perbarui RSVP"
                           : "Kirim RSVP"}
+                      </button>
+                      <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="w-fit md:hidden px-6 md:px-8 py-2.5 rounded-full text-base md:text-lg dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-800"
+                      >
+                        Detail Acara
                       </button>
                     </div>
 

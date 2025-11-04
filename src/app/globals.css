@@ -223,6 +223,14 @@
   animation-delay: 1600ms;
 }
 
+.delay-1700 {
+  animation-delay: 1700ms;
+}
+
+.delay-1800 {
+  animation-delay: 1800ms;
+}
+
 /* Overlay transition styles */
 .duration-800 {
   transition-duration: 800ms;
@@ -326,13 +334,21 @@
   0% {
     transform: rotate(0deg);
   }
-  2%, 6%, 10%, 14%, 18% {
+  2%,
+  6%,
+  10%,
+  14%,
+  18% {
     transform: rotate(-10deg);
   }
-  4%, 8%, 12%, 16% {
+  4%,
+  8%,
+  12%,
+  16% {
     transform: rotate(10deg);
   }
-  20%, 100% {
+  20%,
+  100% {
     transform: rotate(0deg);
   }
 }
