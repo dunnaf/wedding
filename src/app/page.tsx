@@ -9,27 +9,6 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
 
-interface Firefly {
-  id: number;
-  left: number;
-  top: number;
-  delay: number;
-  duration: number;
-  size: number;
-}
-
-// Generate fireflies with random positions and animation delays
-const generateFireflies = (count: number): Firefly[] => {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    left: Math.random() * 100,
-    top: Math.random() * 100,
-    delay: Math.random() * 5,
-    duration: 3 + Math.random() * 4,
-    size: 2 + Math.random() * 3,
-  }));
-};
-
 export default function Home() {
   const [musicStarted, setMusicStarted] = useState(false);
   const [showContent, setShowContent] = useState(false);
@@ -39,7 +18,6 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showVerseSection, setShowVerseSection] = useState(false);
   const [showBrideGroomSection, setShowBrideGroomSection] = useState(false);
-  const [fireflies, setFireflies] = useState<Firefly[]>([]);
   const musicPlayerRef = useRef<MusicPlayerRef>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
   const verseSectionRef = useRef<HTMLDivElement>(null);
@@ -69,12 +47,6 @@ export default function Home() {
       setGuestName(name);
     }
     setMounted(true);
-  }, []);
-
-  // Generate fireflies on mount
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFireflies(generateFireflies(25));
   }, []);
 
   // Prevent scrolling when overlay is active
@@ -290,6 +262,10 @@ export default function Home() {
               lerp: 0.1,
               duration: 1.2,
               smoothWheel: true,
+              syncTouch: true,
+              syncTouchLerp: 0.075,
+              touchInertiaExponent: 35,
+              touchMultiplier: 2,
             }}
           >
             <div className="relative w-full md:w-7/12 xl:w-9/12">
@@ -358,24 +334,6 @@ export default function Home() {
                 ref={verseSectionRef}
                 className="relative w-full h-screen flex flex-col md:justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white"
               >
-                {/* Fireflies Animation */}
-                {fireflies.map((firefly) => (
-                  <div
-                    key={`verse-${firefly.id}`}
-                    className="absolute rounded-full bg-yellow-400 opacity-0 animate-firefly"
-                    style={{
-                      left: `${firefly.left}%`,
-                      top: `${firefly.top}%`,
-                      width: `${firefly.size}px`,
-                      height: `${firefly.size}px`,
-                      animationDelay: `${firefly.delay}s`,
-                      animationDuration: `${firefly.duration}s`,
-                      boxShadow: `0 0 ${firefly.size * 3}px ${
-                        firefly.size
-                      }px rgba(251, 191, 36, 0.3)`,
-                    }}
-                  />
-                ))}
                 <div className="md:hidden w-full flex justify-center mb-4">
                   <div className="w-fit flex justify-center p-4">
                     <Image
@@ -557,24 +515,6 @@ export default function Home() {
                 ref={brideGroomSectionRef}
                 className="relative w-full h-screen flex flex-col justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white"
               >
-                {/* Fireflies Animation */}
-                {fireflies.map((firefly) => (
-                  <div
-                    key={`bridegroom-${firefly.id}`}
-                    className="absolute rounded-full bg-yellow-400 opacity-0 animate-firefly"
-                    style={{
-                      left: `${firefly.left}%`,
-                      top: `${firefly.top}%`,
-                      width: `${firefly.size}px`,
-                      height: `${firefly.size}px`,
-                      animationDelay: `${firefly.delay}s`,
-                      animationDuration: `${firefly.duration}s`,
-                      boxShadow: `0 0 ${firefly.size * 3}px ${
-                        firefly.size
-                      }px rgba(251, 191, 36, 0.3)`,
-                    }}
-                  />
-                ))}
                 <div className="w-full md:w-1/2 flex flex-col gap-4 md:gap-8">
                   <div className={`flex flex-col gap-4 md:gap-6 `}>
                     <div className="flex flex-col gap-4">
@@ -701,47 +641,9 @@ export default function Home() {
                 </div>
               </div>
               <div className="relative w-full h-screen flex flex-col overflow-hidden bg-transparent">
-                <div className="relative w-full h-1/3 bg-white overflow-hidden">
-                  {/* Fireflies Animation */}
-                  {fireflies.map((firefly) => (
-                    <div
-                      key={`closing-${firefly.id}`}
-                      className="absolute rounded-full bg-yellow-400 opacity-0 animate-firefly"
-                      style={{
-                        left: `${firefly.left}%`,
-                        top: `${firefly.top}%`,
-                        width: `${firefly.size}px`,
-                        height: `${firefly.size}px`,
-                        animationDelay: `${firefly.delay}s`,
-                        animationDuration: `${firefly.duration}s`,
-                        boxShadow: `0 0 ${firefly.size * 3}px ${
-                          firefly.size
-                        }px rgba(251, 191, 36, 0.3)`,
-                      }}
-                    />
-                  ))}
-                </div>
+                <div className="relative w-full h-1/3 bg-white overflow-hidden"></div>
                 <div className="w-full h-1/3 bg-transparent"></div>
-                <div className="relative w-full h-1/3 bg-white py-8 md:py-24 px-4 md:px-12 overflow-hidden">
-                  {/* Fireflies Animation */}
-                  {fireflies.map((firefly) => (
-                    <div
-                      key={`closing-${firefly.id}`}
-                      className="absolute rounded-full bg-yellow-400 opacity-0 animate-firefly"
-                      style={{
-                        left: `${firefly.left}%`,
-                        top: `${firefly.top}%`,
-                        width: `${firefly.size}px`,
-                        height: `${firefly.size}px`,
-                        animationDelay: `${firefly.delay}s`,
-                        animationDuration: `${firefly.duration}s`,
-                        boxShadow: `0 0 ${firefly.size * 3}px ${
-                          firefly.size
-                        }px rgba(251, 191, 36, 0.3)`,
-                      }}
-                    />
-                  ))}
-                </div>
+                <div className="relative w-full h-1/3 bg-white py-8 md:py-24 px-4 md:px-12 overflow-hidden"></div>
               </div>
             </div>
           </ReactLenis>
