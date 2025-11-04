@@ -13,15 +13,25 @@ export default function Home() {
   const [musicStarted, setMusicStarted] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [showMusicButton, setShowMusicButton] = useState(false);
-  const [guestName, setGuestName] = useState("Guest");
+  const [guestName, setGuestName] = useState("Tamu Undangan");
   const [mounted, setMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showVerseSection, setShowVerseSection] = useState(false);
   const [showBrideGroomSection, setShowBrideGroomSection] = useState(false);
+  const [showFormSection, setShowFormSection] = useState(false);
   const musicPlayerRef = useRef<MusicPlayerRef>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
   const verseSectionRef = useRef<HTMLDivElement>(null);
   const brideGroomSectionRef = useRef<HTMLDivElement>(null);
+  const formSectionRef = useRef<HTMLDivElement>(null);
+
+  // Form states
+  const [fullName, setFullName] = useState("");
+  const [canAttend, setCanAttend] = useState<"" | "yes" | "no">("");
+  const [numberOfPersons, setNumberOfPersons] = useState("1");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   // Parallax effect using Lenis
   useLenis(({ scroll }) => {
@@ -45,6 +55,8 @@ export default function Home() {
     if (name) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setGuestName(name);
+      // Auto-populate the form field "Nama Lengkap" with URL parameter
+      setFullName(name);
     }
     setMounted(true);
   }, []);
@@ -132,6 +144,36 @@ export default function Home() {
     };
   }, []);
 
+  // Intersection Observer for Form section animations (all 3 sections as one)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+            setShowFormSection(true);
+          } else if (!entry.isIntersecting) {
+            setShowFormSection(false);
+          }
+        });
+      },
+      {
+        threshold: [0, 0.3],
+        rootMargin: "0px",
+      }
+    );
+
+    const currentRef = formSectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
   const handleOverlayOpen = () => {
     // Start music IMMEDIATELY in this user gesture event handler
     // This is critical for iOS Safari autoplay to work
@@ -148,6 +190,69 @@ export default function Home() {
     setTimeout(() => {
       setShowMusicButton(true);
     }, 800);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!fullName || !canAttend || !message) {
+      alert("Mohon lengkapi semua kolom yang diperlukan");
+      return;
+    }
+
+    if (canAttend === "yes" && !numberOfPersons) {
+      alert("Mohon isi jumlah tamu yang akan hadir");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
+
+      if (!scriptUrl) {
+        console.error("Google Script URL not configured");
+        alert("Konfigurasi tidak lengkap. Silakan hubungi administrator.");
+        return;
+      }
+
+      // Prepare data to send
+      const formData = {
+        fullName,
+        canAttend: canAttend === "yes" ? "Hadir" : "Tidak Hadir",
+        numberOfPersons: canAttend === "yes" ? numberOfPersons : "0",
+        message,
+      };
+
+      // Send to Google Sheets via Apps Script
+      await fetch(scriptUrl, {
+        method: "POST",
+        mode: "no-cors", // Important for Google Apps Script
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      // Note: With no-cors mode, we can't read the response
+      // but if no error is thrown, it likely succeeded
+      setSubmitSuccess(true);
+      setTimeout(() => {
+        setSubmitSuccess(false);
+        // Reset form but keep the guest name from URL
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("name");
+        setFullName(name || "");
+        setCanAttend("");
+        setNumberOfPersons("1");
+        setMessage("");
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting RSVP:", error);
+      alert("Terjadi kesalahan. Silakan coba lagi.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -175,17 +280,21 @@ export default function Home() {
         {showContent && (
           <button
             onClick={() => setIsModalOpen(true)}
-            className="md:hidden fixed bottom-6 right-6 z-50 w-15 h-15 bg-black hover:bg-gray-900 text-white shadow-lg hover:shadow-xl rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 animate-fade-in delay-1200"
+            className="md:hidden fixed bottom-6 right-6 z-50 w-15 h-15 bg-black hover:bg-gray-900 text-white shadow-lg hover:shadow-xl rounded-full flex items-center justify-center transition-all duration-300 animate-fade-in delay-1200"
             aria-label="Lihat detail acara"
           >
-            {/* Heart icon - represents wedding/love */}
+            {/* Calendar icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-7 h-7 animate-heart-pulse"
+              className="w-7 h-7"
               fill="currentColor"
               viewBox="0 0 24 24"
+              style={{
+                animation: "alarmShake 3s ease-in-out infinite",
+                transformOrigin: "center",
+              }}
             >
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z" />
             </svg>
           </button>
         )}
@@ -641,14 +750,317 @@ export default function Home() {
                         : "opacity-0"
                     }`}
                   >
-                    Cinta sederhana, bahagia hingga surga. 💞
+                    Cinta sederhana, bahagia hingga surga.
                   </div>
                 </div>
               </div>
-              <div className="relative w-full h-screen flex flex-col overflow-hidden bg-transparent">
-                <div className="relative w-full h-1/3 bg-white overflow-hidden"></div>
-                <div className="w-full h-1/3 bg-transparent"></div>
-                <div className="relative w-full h-1/3 bg-white py-8 md:py-24 px-4 md:px-12 overflow-hidden"></div>
+              <div
+                ref={formSectionRef}
+                className="relative w-full h-screen flex flex-col overflow-hidden bg-transparent"
+              >
+                {/* RSVP Form Section */}
+                <div className="relative w-full h-1/3 bg-white overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8">
+                  <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col gap-3">
+                    <div
+                      className={`text-2xl md:text-3xl dancing-script text-center font-bold text-gray-800 ${
+                        showFormSection ? "animate-fade-in" : "opacity-0"
+                      }`}
+                    >
+                      Konfirmasi Kehadiran
+                    </div>
+
+                    {/* Full Name Input - Full Width */}
+                    <div
+                      className={`flex flex-col gap-1 ${
+                        showFormSection
+                          ? "animate-fade-in delay-200"
+                          : "opacity-0"
+                      }`}
+                    >
+                      <label
+                        htmlFor="fullName"
+                        className="text-xs md:text-sm ubuntu text-gray-700 font-semibold"
+                      >
+                        Nama Lengkap <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="fullName"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu transition-all"
+                        placeholder="Contoh: John Doe"
+                        required
+                      />
+                    </div>
+
+                    {/* Can Attend and Number of Persons - Side by Side */}
+                    <div
+                      className={`flex flex-row gap-2 md:gap-3 ${
+                        showFormSection
+                          ? "animate-fade-in delay-400"
+                          : "opacity-0"
+                      }`}
+                    >
+                      {/* Can Attend Dropdown */}
+                      <div className="flex flex-col gap-1 flex-1">
+                        <label
+                          htmlFor="canAttend"
+                          className="text-xs md:text-sm ubuntu text-gray-700 font-semibold"
+                        >
+                          Konfirmasi Kehadiran{" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          id="canAttend"
+                          value={canAttend}
+                          onChange={(e) =>
+                            setCanAttend(e.target.value as "" | "yes" | "no")
+                          }
+                          className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu bg-white transition-all appearance-none cursor-pointer"
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "right 0.5rem center",
+                            backgroundSize: "1.25em 1.25em",
+                            paddingRight: "2rem",
+                          }}
+                          required
+                        >
+                          <option value="" disabled>
+                            Pilih status kehadiran
+                          </option>
+                          <option value="yes">✓ Ya, saya akan hadir</option>
+                          <option value="no">
+                            ✗ Maaf, saya tidak bisa hadir
+                          </option>
+                        </select>
+                      </div>
+
+                      {/* Number of Persons (always visible, disabled when not attending) */}
+                      <div className="flex flex-col gap-1 flex-1">
+                        <label
+                          htmlFor="numberOfPersons"
+                          className="text-xs md:text-sm ubuntu text-gray-700 font-semibold"
+                        >
+                          Jumlah Tamu yang Hadir{" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          id="numberOfPersons"
+                          value={numberOfPersons}
+                          onChange={(e) => setNumberOfPersons(e.target.value)}
+                          className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:outline-none ubuntu bg-white transition-all appearance-none ${
+                            canAttend !== "yes"
+                              ? "border-gray-200 text-gray-400 cursor-not-allowed"
+                              : "border-gray-300 focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 cursor-pointer"
+                          }`}
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23${
+                              canAttend !== "yes" ? "9CA3AF" : "374151"
+                            }'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "right 0.5rem center",
+                            backgroundSize: "1.25em 1.25em",
+                            paddingRight: "2rem",
+                          }}
+                          required={canAttend === "yes"}
+                          disabled={canAttend !== "yes"}
+                        >
+                          <option value="1">1 Orang</option>
+                          <option value="2">2 Orang</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Gift Section */}
+                <div className="w-full h-1/3 bg-transparent overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8">
+                  <div className="w-full md:w-2/3 lg:w-3/4 xl:w-2/3 flex flex-col gap-3 bg-white/80 backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg">
+                    <div
+                      className={`text-2xl md:text-3xl dancing-script text-center font-bold text-gray-800 ${
+                        showFormSection
+                          ? "animate-fade-in delay-600"
+                          : "opacity-0"
+                      }`}
+                    >
+                      Amplop Digital
+                    </div>
+                    <div
+                      className={`text-xs md:text-sm ubuntu text-center text-gray-600 ${
+                        showFormSection
+                          ? "animate-fade-in delay-800"
+                          : "opacity-0"
+                      }`}
+                    >
+                      💞 Dari hati, untuk rumah tangga baru kami. 💞
+                    </div>
+
+                    {/* Bank Accounts - Side by Side */}
+                    <div
+                      className={`flex flex-row gap-2 md:gap-3 ${
+                        showFormSection
+                          ? "animate-fade-in delay-1000"
+                          : "opacity-0"
+                      }`}
+                    >
+                      {/* Bank Account 1 */}
+                      <div
+                        onClick={() => {
+                          navigator.clipboard.writeText("1234567890");
+                          alert("Nomor rekening telah disalin!");
+                        }}
+                        className="relative flex flex-col gap-2 p-3 md:p-4 border border-gray-300 rounded-lg flex-1 cursor-pointer hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="absolute top-3 right-3 md:top-4 md:right-4">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-5 h-5 text-gray-600"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
+                            />
+                          </svg>
+                        </div>
+                        <div className="text-base md:text-lg dancing-script font-bold text-gray-800">
+                          Bank BSI
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <div className="text-base md:text-lg ubuntu font-bold text-gray-800">
+                            7183108829
+                          </div>
+                          <div className="text-xs ubuntu text-gray-600">
+                            a.n. Nanda Achidunnafi
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bank Account 2 */}
+                      <div
+                        onClick={() => {
+                          navigator.clipboard.writeText("0987654321");
+                          alert("Nomor rekening telah disalin!");
+                        }}
+                        className="relative flex flex-col gap-2 p-3 md:p-4 border border-gray-300 rounded-lg flex-1 cursor-pointer hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="absolute top-3 right-3 md:top-4 md:right-4">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-5 h-5 text-gray-600"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"
+                            />
+                          </svg>
+                        </div>
+                        <div className="text-base md:text-lg dancing-script font-bold text-gray-800">
+                          ShopeePay
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <div className="text-base md:text-lg ubuntu font-bold text-gray-800">
+                            08999847355
+                          </div>
+                          <div className="text-xs ubuntu text-gray-600">
+                            a.n. Khoirun Nisa Amarsya
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Message Section */}
+                <div className="relative w-full h-1/3 bg-white overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8">
+                  <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col gap-3">
+                    <div
+                      className={`text-2xl md:text-3xl dancing-script text-center font-bold text-gray-800 ${
+                        showFormSection
+                          ? "animate-fade-in delay-1200"
+                          : "opacity-0"
+                      }`}
+                    >
+                      Ucapan & Doa
+                    </div>
+
+                    {/* Message Textarea */}
+                    <div
+                      className={`flex flex-col gap-1 ${
+                        showFormSection
+                          ? "animate-fade-in delay-1400"
+                          : "opacity-0"
+                      }`}
+                    >
+                      <label
+                        htmlFor="message"
+                        className="text-xs md:text-sm ubuntu text-gray-700 font-semibold"
+                      >
+                        Doa dan Ucapan untuk Kami
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        id="message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        rows={3}
+                        className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu resize-none"
+                        placeholder="Titipkan doa terbaikmu untuk perjalanan kami..."
+                        required
+                      />
+                    </div>
+
+                    {/* Buttons - Side by Side */}
+                    <div
+                      className={`flex flex-row gap-2 md:gap-3 justify-center ${
+                        showFormSection
+                          ? "animate-fade-in delay-1600"
+                          : "opacity-0"
+                      }`}
+                    >
+                      <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="md:hidden px-6 md:px-8 py-2.5 rounded-full text-base md:text-lg dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-800"
+                      >
+                        Detail Acara
+                      </button>
+                      <button
+                        onClick={handleSubmit}
+                        disabled={isSubmitting || submitSuccess}
+                        className={`px-6 md:px-8 py-2.5 rounded-full text-base md:text-lg dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+                          submitSuccess
+                            ? "bg-green-600 text-white cursor-not-allowed"
+                            : isSubmitting
+                            ? "bg-gray-400 text-white cursor-not-allowed"
+                            : "bg-gray-800 hover:bg-gray-900 text-white"
+                        }`}
+                      >
+                        {submitSuccess
+                          ? "✓ Terkirim!"
+                          : isSubmitting
+                          ? "Mengirim..."
+                          : "Kirim RSVP"}
+                      </button>
+                    </div>
+
+                    {submitSuccess && (
+                      <div className="text-center text-sm text-green-600 ubuntu animate-fade-in">
+                        Konfirmasi diterima~ Terima kasih! ✨
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </ReactLenis>

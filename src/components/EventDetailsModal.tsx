@@ -115,9 +115,7 @@ export default function EventDetailsModal({
         style={{
           bottom: 0,
           transform: `translateY(${
-            !isVisible || !isOpen
-              ? "100%"
-              : `calc(0% + ${translateY}px)`
+            !isVisible || !isOpen ? "100%" : `calc(0% + ${translateY}px)`
           })`,
         }}
         onTouchStart={handleTouchStart}
@@ -185,18 +183,6 @@ export default function EventDetailsModal({
               <div className="text-xs text-gray-500 ubuntu text-center mt-2">
                 Klik untuk melihat di Google Maps
               </div>
-            </a>
-
-            {/* RSVP Button */}
-            <a
-              href="https://forms.gle/4LBDDDcMSTt9ZTQh9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`mt-2 px-10 py-4 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-xl dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
-                isOpen ? "animate-fade-in delay-500 opacity-100" : "opacity-0"
-              }`}
-            >
-              Konfirmasi Kehadiran
             </a>
           </div>
         </div>

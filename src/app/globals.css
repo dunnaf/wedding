@@ -143,7 +143,8 @@
 }
 
 @keyframes ping {
-  75%, 100% {
+  75%,
+  100% {
     transform: scale(1.5);
     opacity: 0;
   }
@@ -210,6 +211,18 @@
   animation-delay: 1300ms;
 }
 
+.delay-1400 {
+  animation-delay: 1400ms;
+}
+
+.delay-1500 {
+  animation-delay: 1500ms;
+}
+
+.delay-1600 {
+  animation-delay: 1600ms;
+}
+
 /* Overlay transition styles */
 .duration-800 {
   transition-duration: 800ms;
@@ -234,7 +247,7 @@
 
 .camera-focus-border::before,
 .camera-focus-border::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   right: 0;
@@ -246,8 +259,7 @@
 .camera-focus-border::before {
   top: 0;
   height: 30px;
-  background: 
-    linear-gradient(#000000, #000000) left top no-repeat,
+  background: linear-gradient(#000000, #000000) left top no-repeat,
     linear-gradient(#000000, #000000) left top no-repeat;
   background-size: 3px 30px, 30px 3px;
 }
@@ -256,15 +268,15 @@
 .camera-focus-border::after {
   bottom: 0;
   height: 30px;
-  background: 
-    linear-gradient(#000000, #000000) right bottom no-repeat,
+  background: linear-gradient(#000000, #000000) right bottom no-repeat,
     linear-gradient(#000000, #000000) right bottom no-repeat;
   background-size: 3px 30px, 30px 3px;
 }
 
 /* Fireflies Animation */
 @keyframes firefly {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
     transform: translateY(0) translateX(0) scale(0.5);
   }
@@ -288,7 +300,8 @@
 
 /* Heart Pulse Animation */
 @keyframes heartPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   10% {
@@ -309,9 +322,30 @@
   animation: heartPulse 2s ease-in-out infinite;
 }
 
+@keyframes alarmShake {
+  0% {
+    transform: rotate(0deg);
+  }
+  2%, 6%, 10%, 14%, 18% {
+    transform: rotate(-10deg);
+  }
+  4%, 8%, 12%, 16% {
+    transform: rotate(10deg);
+  }
+  20%, 100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-alarm-shake {
+  animation: alarmShake 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
 /* Floating Flowers Animations - Constant Speed with Swaying */
 @keyframes sway {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
   25% {
@@ -331,7 +365,8 @@
     transform: translateY(0) rotate(0deg);
     opacity: 0.7;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.9;
   }
   100% {
@@ -345,7 +380,8 @@
     transform: translateY(0) rotate(0deg);
     opacity: 0.7;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.9;
   }
   100% {
@@ -359,7 +395,8 @@
     transform: translateX(0) rotate(0deg);
     opacity: 0.7;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.9;
   }
   100% {
@@ -373,7 +410,8 @@
     transform: translateX(0) rotate(0deg);
     opacity: 0.7;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.9;
   }
   100% {
@@ -387,7 +425,8 @@
     transform: translate(0, 0) rotate(0deg);
     opacity: 0.7;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.9;
   }
   100% {
@@ -401,7 +440,8 @@
     transform: translate(0, 0) rotate(0deg);
     opacity: 0.7;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.9;
   }
   100% {
@@ -415,7 +455,8 @@
     transform: translate(0, 0) rotate(0deg);
     opacity: 0.7;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.9;
   }
   100% {
@@ -429,7 +470,8 @@
     transform: translate(0, 0) rotate(0deg);
     opacity: 0.7;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.9;
   }
   100% {
