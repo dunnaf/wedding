@@ -183,22 +183,23 @@ export default function Home() {
     };
   }, []);
 
-  // Intersection Observer for bride and groom section animations
+  // Intersection Observer for bride and groom section animations (only triggers once)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            // Show content when 30% or more is visible
+            // Show content when 50% or more is visible
             setShowBrideGroomSection(true);
-          } else if (!entry.isIntersecting) {
-            // Hide content when section is completely out of view
-            setShowBrideGroomSection(false);
+            // Unobserve after first trigger to prevent replay
+            if (brideGroomSectionRef.current) {
+              observer.unobserve(brideGroomSectionRef.current);
+            }
           }
         });
       },
       {
-        threshold: [0, 0.5], // Track when section enters/exits and when 30% is visible
+        threshold: [0, 0.5], // Track when 50% is visible
         rootMargin: "0px",
       }
     );
