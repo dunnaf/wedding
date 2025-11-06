@@ -616,7 +616,7 @@ export default function Home() {
                     <div
                       className={`text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right ${
                         showVerseSection
-                          ? "animate-typing delay-400"
+                          ? "animate-fade-in delay-400"
                           : "opacity-0"
                       }`}
                     >
@@ -629,7 +629,7 @@ export default function Home() {
                       <div
                         className={`relative h-[1px] bg-gray-600 ${
                           showVerseSection
-                            ? "animate-line-reveal-right delay-1600"
+                            ? "animate-line-reveal-right delay-800"
                             : "w-0 opacity-0"
                         }`}
                       >
@@ -639,7 +639,7 @@ export default function Home() {
                     <div
                       className={`text-center text-sm md:text-base dancing-script text-center my-4 font-bold ${
                         showVerseSection
-                          ? "animate-fade-in delay-1800"
+                          ? "animate-fade-in delay-1400"
                           : "opacity-0"
                       }`}
                     >
@@ -649,7 +649,7 @@ export default function Home() {
                       <div
                         className={`relative h-[1px] bg-gray-600 ${
                           showVerseSection
-                            ? "animate-line-reveal-left delay-2000"
+                            ? "animate-line-reveal-left delay-800"
                             : "w-0 opacity-0"
                         }`}
                       >
@@ -659,7 +659,7 @@ export default function Home() {
                     <div
                       className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
                         showVerseSection
-                          ? "animate-fade-in delay-2200"
+                          ? "animate-fade-in delay-2000"
                           : "opacity-0"
                       }`}
                     >
@@ -675,7 +675,7 @@ export default function Home() {
                     <div
                       className={`text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right ${
                         showVerseSection
-                          ? "animate-typing delay-3000"
+                          ? "animate-fade-in delay-2400"
                           : "opacity-0"
                       }`}
                     >
@@ -687,7 +687,7 @@ export default function Home() {
                       <div
                         className={`relative h-[1px] bg-gray-600 ${
                           showVerseSection
-                            ? "animate-line-reveal-right delay-4200"
+                            ? "animate-line-reveal-right delay-2800"
                             : "w-0 opacity-0"
                         }`}
                       >
@@ -697,7 +697,7 @@ export default function Home() {
                     <div
                       className={`text-center text-sm md:text-base dancing-script text-center my-4 font-bold ${
                         showVerseSection
-                          ? "animate-fade-in delay-4400"
+                          ? "animate-fade-in delay-3400"
                           : "opacity-0"
                       }`}
                     >
@@ -707,7 +707,7 @@ export default function Home() {
                       <div
                         className={`relative h-[1px] bg-gray-600 ${
                           showVerseSection
-                            ? "animate-line-reveal-left delay-4600"
+                            ? "animate-line-reveal-left delay-2800"
                             : "w-0 opacity-0"
                         }`}
                       >
@@ -717,7 +717,7 @@ export default function Home() {
                     <div
                       className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
                         showVerseSection
-                          ? "animate-fade-in delay-4800"
+                          ? "animate-fade-in delay-4000"
                           : "opacity-0"
                       }`}
                     >

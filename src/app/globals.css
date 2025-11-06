@@ -146,37 +146,9 @@
   }
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes ping {
-  75%,
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out forwards;
   opacity: 0;
-}
-
-.animate-fade-out {
-  animation: fadeOut 0.5s ease-in forwards;
-  opacity: 1;
-}
-
-.animate-ping {
-  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .delay-100 {
@@ -195,412 +167,57 @@
   animation-delay: 400ms;
 }
 
-.delay-500 {
-  animation-delay: 500ms;
-}
-
 .delay-600 {
   animation-delay: 600ms;
-}
-
-.delay-700 {
-  animation-delay: 700ms;
 }
 
 .delay-800 {
   animation-delay: 800ms;
 }
 
-.delay-900 {
-  animation-delay: 900ms;
-}
-
 .delay-1000 {
   animation-delay: 1000ms;
-}
-
-.delay-1100 {
-  animation-delay: 1100ms;
 }
 
 .delay-1200 {
   animation-delay: 1200ms;
 }
 
-.delay-1300 {
-  animation-delay: 1300ms;
-}
-
 .delay-1400 {
   animation-delay: 1400ms;
-}
-
-.delay-1500 {
-  animation-delay: 1500ms;
 }
 
 .delay-1600 {
   animation-delay: 1600ms;
 }
 
-.delay-1700 {
-  animation-delay: 1700ms;
-}
-
 .delay-1800 {
   animation-delay: 1800ms;
-}
-
-.delay-1900 {
-  animation-delay: 1900ms;
 }
 
 .delay-2000 {
   animation-delay: 2000ms;
 }
 
-.delay-2100 {
-  animation-delay: 2100ms;
-}
-
-.delay-2200 {
-  animation-delay: 2200ms;
-}
-
-.delay-2300 {
-  animation-delay: 2300ms;
-}
-
 .delay-2400 {
   animation-delay: 2400ms;
-}
-
-.delay-2500 {
-  animation-delay: 2500ms;
-}
-
-.delay-2600 {
-  animation-delay: 2600ms;
-}
-
-.delay-2700 {
-  animation-delay: 2700ms;
 }
 
 .delay-2800 {
   animation-delay: 2800ms;
 }
 
-.delay-2900 {
-  animation-delay: 2900ms;
-}
-
-.delay-3000 {
-  animation-delay: 3000ms;
-}
-
-.delay-3100 {
-  animation-delay: 3100ms;
-}
-
-.delay-3200 {
-  animation-delay: 3200ms;
-}
-
-.delay-3300 {
-  animation-delay: 3300ms;
-}
-
 .delay-3400 {
   animation-delay: 3400ms;
-}
-
-.delay-3500 {
-  animation-delay: 3500ms;
-}
-
-.delay-3600 {
-  animation-delay: 3600ms;
-}
-
-.delay-3700 {
-  animation-delay: 3700ms;
-}
-
-.delay-3800 {
-  animation-delay: 3800ms;
-}
-
-.delay-3900 {
-  animation-delay: 3900ms;
 }
 
 .delay-4000 {
   animation-delay: 4000ms;
 }
 
-.delay-4100 {
-  animation-delay: 4100ms;
-}
-
-.delay-4200 {
-  animation-delay: 4200ms;
-}
-
-.delay-4300 {
-  animation-delay: 4300ms;
-}
-
-.delay-4400 {
-  animation-delay: 4400ms;
-}
-
-.delay-4500 {
-  animation-delay: 4500ms;
-}
-
-.delay-4600 {
-  animation-delay: 4600ms;
-}
-
-.delay-4700 {
-  animation-delay: 4700ms;
-}
-
-.delay-4800 {
-  animation-delay: 4800ms;
-}
-
-.delay-4900 {
-  animation-delay: 4900ms;
-}
-
-.delay-5000 {
-  animation-delay: 5000ms;
-}
-
-.delay-5100 {
-  animation-delay: 5100ms;
-}
-
-.delay-5200 {
-  animation-delay: 5200ms;
-}
-
-.delay-5300 {
-  animation-delay: 5300ms;
-}
-
-.delay-5400 {
-  animation-delay: 5400ms;
-}
-
-.delay-5500 {
-  animation-delay: 5500ms;
-}
-
-.delay-5600 {
-  animation-delay: 5600ms;
-}
-
-.delay-5700 {
-  animation-delay: 5700ms;
-}
-
-.delay-5800 {
-  animation-delay: 5800ms;
-}
-
-.delay-5900 {
-  animation-delay: 5900ms;
-}
-
-.delay-6000 {
-  animation-delay: 6000ms;
-}
-
-.delay-6100 {
-  animation-delay: 6100ms;
-}
-
-.delay-6200 {
-  animation-delay: 6200ms;
-}
-
-.delay-6300 {
-  animation-delay: 6300ms;
-}
-
-.delay-6400 {
-  animation-delay: 6400ms;
-}
-
-.delay-6500 {
-  animation-delay: 6500ms;
-}
-
-.delay-6600 {
-  animation-delay: 6600ms;
-}
-
-.delay-6700 {
-  animation-delay: 6700ms;
-}
-
-.delay-6800 {
-  animation-delay: 6800ms;
-}
-
-.delay-6900 {
-  animation-delay: 6900ms;
-}
-
-.delay-7000 {
-  animation-delay: 7000ms;
-}
-
-.delay-7100 {
-  animation-delay: 7100ms;
-}
-
-.delay-7200 {
-  animation-delay: 7200ms;
-}
-
-.delay-7300 {
-  animation-delay: 7300ms;
-}
-
-.delay-7400 {
-  animation-delay: 7400ms;
-}
-
-.delay-7500 {
-  animation-delay: 7500ms;
-}
-
-.delay-7600 {
-  animation-delay: 7600ms;
-}
-
-.delay-7700 {
-  animation-delay: 7700ms;
-}
-
-.delay-7800 {
-  animation-delay: 7800ms;
-}
-
-.delay-7900 {
-  animation-delay: 7900ms;
-}
-
-.delay-8000 {
-  animation-delay: 8000ms;
-}
-
-.delay-8100 {
-  animation-delay: 8100ms;
-}
-
-.delay-8200 {
-  animation-delay: 8200ms;
-}
-
-.delay-8300 {
-  animation-delay: 8300ms;
-}
-
-.delay-8400 {
-  animation-delay: 8400ms;
-}
-
-.delay-8500 {
-  animation-delay: 8500ms;
-}
-
-.delay-8600 {
-  animation-delay: 8600ms;
-}
-
-.delay-8700 {
-  animation-delay: 8700ms;
-}
-
-.delay-8800 {
-  animation-delay: 8800ms;
-}
-
-.delay-8900 {
-  animation-delay: 8900ms;
-}
-
-.delay-9000 {
-  animation-delay: 9000ms;
-}
-
-.delay-9100 {
-  animation-delay: 9100ms;
-}
-
-.delay-9200 {
-  animation-delay: 9200ms;
-}
-
-.delay-9300 {
-  animation-delay: 9300ms;
-}
-
-.delay-9400 {
-  animation-delay: 9400ms;
-}
-
-.delay-9500 {
-  animation-delay: 9500ms;
-}
-
-.delay-9600 {
-  animation-delay: 9600ms;
-}
-
-.delay-9700 {
-  animation-delay: 9700ms;
-} 
-
-.delay-9800 {
-  animation-delay: 9800ms;
-}
-
-.delay-9900 {
-  animation-delay: 9900ms;
-}
-
-.delay-10000 {
-  animation-delay: 10000ms;
-}
-
-.delay-10100 {
-  animation-delay: 10100ms;
-}
-
-.delay-10200 {
-  animation-delay: 10200ms;
-}
-
 /* Overlay transition styles */
 .duration-800 {
   transition-duration: 800ms;
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 /* Camera focus corner borders */
@@ -662,30 +279,6 @@
   animation: firefly infinite ease-in-out;
 }
 
-/* Heart Pulse Animation */
-@keyframes heartPulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  10% {
-    transform: scale(1.1);
-  }
-  20% {
-    transform: scale(1);
-  }
-  30% {
-    transform: scale(1.15);
-  }
-  40% {
-    transform: scale(1);
-  }
-}
-
-.animate-heart-pulse {
-  animation: heartPulse 2s ease-in-out infinite;
-}
-
 /* Romantic Love Icon Animation */
 @keyframes romanticFloat {
   0%, 100% {
@@ -736,11 +329,6 @@
   100% {
     transform: rotate(0deg);
   }
-}
-
-.animate-alarm-shake {
-  animation: alarmShake 3s ease-in-out infinite;
-  transform-origin: center;
 }
 
 /* Floating Flowers Animations - Constant Speed with Swaying */
@@ -938,8 +526,8 @@
 
 .animate-line-reveal-left {
   animation-name: lineGrowLeft;
-  animation-duration: 0.8s;
-  animation-timing-function: ease-out;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   width: 0%;
   opacity: 1;
@@ -947,33 +535,9 @@
 
 .animate-line-reveal-right {
   animation-name: lineGrowRight;
-  animation-duration: 0.8s;
-  animation-timing-function: ease-out;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   width: 0%;
   opacity: 1;
-}
-
-/* Typing Animation for Arabic Text (Right to Left) */
-@keyframes typingRTL {
-  from {
-    clip-path: inset(0 0 0 100%);
-    opacity: 0;
-  }
-  1% {
-    opacity: 1;
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-    opacity: 1;
-  }
-}
-
-.animate-typing {
-  animation-name: typingRTL;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards;
-  clip-path: inset(0 0 0 100%);
-  opacity: 0;
 }
