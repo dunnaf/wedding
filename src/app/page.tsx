@@ -96,12 +96,13 @@ export default function Home() {
       // Check if this guest has already submitted
       const submissionKey = `rsvp_submitted_${name
         .toLowerCase()
+        .replace(/-/g, ' ')
         .replace(/\s+/g, "_")}`;
       const previousSubmission = localStorage.getItem(submissionKey);
 
       if (previousSubmission) {
         // Auto-fill the name if they've submitted before
-        setFullName(name);
+        setFullName(name.replace(/-/g, ' ').toUpperCase());
       }
     }
     setMounted(true);
@@ -112,6 +113,7 @@ export default function Home() {
     if (fullName && fullName.trim() !== "") {
       const submissionKey = `rsvp_submitted_${fullName
         .toLowerCase()
+        .replace(/-/g, ' ')
         .replace(/\s+/g, "_")}`;
       const previousSubmission = localStorage.getItem(submissionKey);
 
@@ -326,6 +328,7 @@ export default function Home() {
       // Save to localStorage to prevent duplicates
       const submissionKey = `rsvp_submitted_${fullName
         .toLowerCase()
+        .replace(/-/g, ' ')
         .replace(/\s+/g, "_")}`;
       localStorage.setItem(
         submissionKey,
@@ -533,7 +536,10 @@ export default function Home() {
                         }
                       >
                         <ShinyText
-                          text={guestName}
+                          text={guestName
+                            .replace(/-/g, ' ')
+                            .toLowerCase()
+                            .replace(/\b\w/g, (char) => char.toUpperCase())}
                           disabled={false}
                           speed={3}
                           className="text-5xl md:text-8xl dancing-script font-bold text-center"
@@ -957,7 +963,7 @@ export default function Home() {
                         type="text"
                         id="fullName"
                         value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
+                        onChange={(e) => setFullName(e.target.value.toUpperCase())}
                         className="w-full px-3 py-2 text-xs border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu transition-all bg-white"
                         placeholder="Masukkan nama lengkap Anda"
                         required
@@ -966,11 +972,11 @@ export default function Home() {
                       {guestName !== "Tamu Undangan" && !fullName && (
                         <button
                           type="button"
-                          onClick={() => setFullName(guestName)}
+                          onClick={() => setFullName(guestName.replace(/-/g, ' ').toUpperCase())}
                           className="text-[10px] md:text-xs text-gray-600 ubuntu py-1.5 px-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded text-left transition-colors"
                         >
                           💡 Gunakan nama ini:{" "}
-                          <span className="font-bold">{guestName}</span>
+                          <span className="font-bold">{guestName.replace(/-/g, ' ').toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())}</span>
                         </button>
                       )}
                       {guestName === "Tamu Undangan" && (

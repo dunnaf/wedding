@@ -21,13 +21,13 @@ const FloatingSky: React.FC = () => {
 
   useEffect(() => {
     // Generate elegant floating cloud elements with varied directions
-    const elements: SkyElement[] = Array.from({ length: 6 }, (_, i) => {
+    const elements: SkyElement[] = Array.from({ length: 12 }, (_, i) => {
       const direction = Math.random() > 0.5 ? "left" : "right";
 
-      // Mix of starting positions: some in center (visible immediately), some off-screen
+      // Mix of starting positions: more clouds in center (visible immediately), some off-screen
       let startLeft;
-      if (i < 4) {
-        // First 4 clouds start in center (10-90% range) - immediately visible
+      if (i < 8) {
+        // First 8 clouds start in center (10-90% range) - immediately visible
         startLeft = 10 + Math.random() * 80;
       } else {
         // Rest start off-screen
@@ -40,10 +40,10 @@ const FloatingSky: React.FC = () => {
       return {
         id: i,
         left: startLeft,
-        top: 10 + (i * 80) / 6 + (Math.random() * 10 - 5), // Evenly distributed vertically with slight randomness
+        top: 10 + (i * 80) / 12 + (Math.random() * 10 - 5), // Evenly distributed vertically with slight randomness
         size: 140 + Math.random() * 120, // Medium to large clouds: 140-260px
         duration: 20 + Math.random() * 30, // Random duration between 20-50s
-        delay: Math.random() * 12, // Random delay 0-12s for staggered effect
+        delay: Math.random() * 15, // Random delay 0-15s for staggered effect
         opacity: 0.08 + Math.random() * 0.22, // Random opacity 0.08-0.3
         direction,
       };
@@ -146,7 +146,7 @@ const FloatingSky: React.FC = () => {
             />
           </svg>
 
-          {/* Inline keyframes for bidirectional drift with fade-in */}
+          {/* Inline keyframes for bidirectional drift with fade-in and fade-out */}
           <style jsx>{`
             @keyframes cloudDrift-${element.id} {
               0% {
@@ -158,6 +158,10 @@ const FloatingSky: React.FC = () => {
                 opacity: ${element.opacity};
                 filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5));
               }
+              90% {
+                opacity: ${element.opacity};
+                filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5));
+              }
               100% {
                 transform: translateX(
                     ${element.direction === "left"
@@ -165,8 +169,8 @@ const FloatingSky: React.FC = () => {
                       : "calc(-100vw - 300px)"}
                   )
                   scale(1);
-                opacity: ${element.opacity};
-                filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5));
+                opacity: 0;
+                filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0));
               }
             }
           `}</style>
