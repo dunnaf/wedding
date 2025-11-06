@@ -912,7 +912,7 @@ export default function Home() {
                             08999847355
                           </div>
                           <div className="text-xs ubuntu text-gray-600">
-                            a.n. Khoirun Nisa Amarsya
+                            a.n. Khoirun Nisa A
                           </div>
                         </div>
                       </div>
@@ -949,7 +949,7 @@ export default function Home() {
                     >
                       <label
                         htmlFor="fullName"
-                        className="text-xs md:text-sm ubuntu text-gray-600 font-light"
+                        className="text-[10px] md:text-sm ubuntu text-gray-600 font-bold"
                       >
                         Nama Lengkap <span className="text-red-500">*</span>
                       </label>
@@ -958,7 +958,7 @@ export default function Home() {
                         id="fullName"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu transition-all bg-white"
+                        className="w-full px-3 py-2 text-xs border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu transition-all bg-white"
                         placeholder="Masukkan nama lengkap Anda"
                         required
                       />
@@ -992,7 +992,7 @@ export default function Home() {
                       <div className="flex flex-col gap-1 flex-1">
                         <label
                           htmlFor="canAttend"
-                          className="text-xs md:text-sm ubuntu text-gray-600 font-light"
+                          className="text-[10px] md:text-sm ubuntu text-gray-600 font-bold"
                         >
                           Konfirmasi Kehadiran{" "}
                           <span className="text-red-500">*</span>
@@ -1003,7 +1003,7 @@ export default function Home() {
                           onChange={(e) =>
                             setCanAttend(e.target.value as "" | "yes" | "no")
                           }
-                          className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu bg-white transition-all appearance-none cursor-pointer"
+                          className="w-full px-3 py-2 text-xs border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu bg-white transition-all appearance-none cursor-pointer"
                           style={{
                             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
                             backgroundRepeat: "no-repeat",
@@ -1027,7 +1027,7 @@ export default function Home() {
                       <div className="flex flex-col gap-1 flex-1">
                         <label
                           htmlFor="numberOfPersons"
-                          className="text-xs md:text-sm ubuntu text-gray-600 font-light"
+                          className="text-[10px] md:text-sm ubuntu text-gray-600 font-bold"
                         >
                           Jumlah Tamu yang Hadir{" "}
                           <span className="text-red-500">*</span>
@@ -1036,7 +1036,7 @@ export default function Home() {
                           id="numberOfPersons"
                           value={numberOfPersons}
                           onChange={(e) => setNumberOfPersons(e.target.value)}
-                          className={`w-full px-3 py-2 text-sm border-2 rounded-lg focus:outline-none ubuntu bg-white transition-all appearance-none ${
+                          className={`w-full px-3 py-2 text-xs border-2 rounded-lg focus:outline-none ubuntu bg-white transition-all appearance-none ${
                             canAttend !== "yes"
                               ? "border-gray-200 text-gray-400 cursor-not-allowed"
                               : "border-gray-300 focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 cursor-pointer"
@@ -1055,6 +1055,9 @@ export default function Home() {
                         >
                           <option value="1">1 Orang</option>
                           <option value="2">2 Orang</option>
+                          <option value="3">3 Orang</option>
+                          <option value="4">4 Orang</option>
+                          <option value="5">5 Orang</option>
                         </select>
                       </div>
                     </div>
@@ -1069,7 +1072,7 @@ export default function Home() {
                     >
                       <label
                         htmlFor="message"
-                        className="text-xs md:text-sm ubuntu text-gray-600 font-light"
+                        className="text-[10px] md:text-sm ubuntu text-gray-600 font-bold"
                       >
                         Doa dan Ucapan untuk Kami
                       </label>
@@ -1078,7 +1081,7 @@ export default function Home() {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         rows={3}
-                        className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu resize-none"
+                        className="w-full px-3 py-2 text-xs border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu resize-none"
                         placeholder="Titipkan doa terbaikmu untuk perjalanan kami..."
                       />
                     </div>
