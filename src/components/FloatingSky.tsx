@@ -175,10 +175,8 @@ const FloatingSky: React.FC = () => {
 
       {/* Stationary clouds with wind effect - Top Right */}
       <div
-        className="absolute will-change-transform right-[-5%] md:right-[5%] top-[5%] md:top-[10%]"
+        className="absolute will-change-transform right-[-5%] md:right-[5%] top-[5%] md:top-[10%] w-[200px] md:w-[350px] h-[110px] md:h-[192.5px]"
         style={{
-          width: "350px",
-          height: "192.5px",
           animation: "windBlow-topRight 8s ease-in-out infinite",
           opacity: 0.15,
         }}
@@ -255,10 +253,8 @@ const FloatingSky: React.FC = () => {
 
       {/* Stationary clouds with wind effect - Bottom Left */}
       <div
-        className="absolute will-change-transform left-[-5%] md:left-[5%] bottom-[8%] md:bottom-[12%]"
+        className="absolute will-change-transform left-[-5%] md:left-[5%] bottom-[8%] md:bottom-[12%] w-[220px] md:w-[380px] h-[121px] md:h-[209px]"
         style={{
-          width: "380px",
-          height: "209px",
           animation: "windBlow-bottomLeft 10s ease-in-out infinite",
           animationDelay: "2s",
           opacity: 0.18,
