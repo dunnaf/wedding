@@ -5,6 +5,7 @@ import MusicPlayer, { MusicPlayerRef } from "@/components/MusicPlayer";
 import WelcomeOverlay from "@/components/WelcomeOverlay";
 import EventDetailsModal from "@/components/EventDetailsModal";
 import FloatingFlowers from "@/components/FloatingFlowers";
+import FloatingSky from "@/components/FloatingSky";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
@@ -19,11 +20,14 @@ export default function Home() {
   const [showVerseSection, setShowVerseSection] = useState(false);
   const [showBrideGroomSection, setShowBrideGroomSection] = useState(false);
   const [showFormSection, setShowFormSection] = useState(false);
+  const [isInRSVPSection, setIsInRSVPSection] = useState(false);
   const musicPlayerRef = useRef<MusicPlayerRef>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
+  const loveIconRef = useRef<HTMLDivElement>(null);
   const verseSectionRef = useRef<HTMLDivElement>(null);
   const brideGroomSectionRef = useRef<HTMLDivElement>(null);
   const formSectionRef = useRef<HTMLDivElement>(null);
+  const rsvpSectionRef = useRef<HTMLDivElement>(null);
 
   // Form states
   const [fullName, setFullName] = useState("");
@@ -38,8 +42,41 @@ export default function Home() {
   useLenis(({ scroll }) => {
     if (parallaxRef.current) {
       // Adjust the 0.5 value to control parallax speed (higher = faster movement)
-      const yPos = scroll * 0.5;
+      const yPos = scroll * 0.8;
       parallaxRef.current.style.transform = `translateY(${yPos}px)`;
+    }
+
+    // Love icon parallax effect
+    if (loveIconRef.current) {
+      const rect = loveIconRef.current.getBoundingClientRect();
+      const elementCenter = rect.top + rect.height / 2;
+      const screenCenter = window.innerHeight / 2;
+
+      // Calculate offset from screen center (positive when below center, negative when above)
+      const distanceFromCenter = elementCenter - screenCenter;
+
+      // Apply parallax based on distance from center
+      // Multiply by a factor to control the strength (0.15 = subtle effect)
+      const yPos = distanceFromCenter * -0.05;
+      loveIconRef.current.style.transform = `translateY(${yPos}px)`;
+    }
+
+    // Check if RSVP section is in view
+    if (rsvpSectionRef.current) {
+      const rect = rsvpSectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // If 30% or more of RSVP section is visible
+      const visibleHeight =
+        Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+      const sectionHeight = rect.height;
+      const visibleRatio = visibleHeight / sectionHeight;
+
+      if (visibleRatio >= 0.3 && rect.top < windowHeight && rect.bottom > 0) {
+        setIsInRSVPSection(true);
+      } else {
+        setIsInRSVPSection(false);
+      }
     }
   });
 
@@ -55,8 +92,6 @@ export default function Home() {
     const name = params.get("name");
     if (name) {
       setGuestName(name);
-      // Auto-populate the form field "Nama Lengkap" with URL parameter
-      setFullName(name);
 
       // Check if this guest has already submitted
       const submissionKey = `rsvp_submitted_${name
@@ -65,17 +100,36 @@ export default function Home() {
       const previousSubmission = localStorage.getItem(submissionKey);
 
       if (previousSubmission) {
-        const submissionData = JSON.parse(previousSubmission);
-        setHasSubmittedBefore(true);
-        // Pre-fill form with previous submission
-        setFullName(submissionData.fullName);
-        setCanAttend(submissionData.canAttend);
-        setNumberOfPersons(submissionData.numberOfPersons);
-        setMessage(submissionData.message);
+        // Auto-fill the name if they've submitted before
+        setFullName(name);
       }
     }
     setMounted(true);
   }, []);
+
+  // Check if current fullName has submitted before (dynamically)
+  useEffect(() => {
+    if (fullName && fullName.trim() !== "") {
+      const submissionKey = `rsvp_submitted_${fullName
+        .toLowerCase()
+        .replace(/\s+/g, "_")}`;
+      const previousSubmission = localStorage.getItem(submissionKey);
+
+      if (previousSubmission) {
+        const submissionData = JSON.parse(previousSubmission);
+        setHasSubmittedBefore(true);
+        // Pre-fill form with previous submission data for this name
+        setCanAttend(submissionData.canAttend);
+        setNumberOfPersons(submissionData.numberOfPersons);
+        setMessage(submissionData.message);
+      } else {
+        // Reset if this name hasn't submitted before
+        setHasSubmittedBefore(false);
+      }
+    } else {
+      setHasSubmittedBefore(false);
+    }
+  }, [fullName]);
 
   // Prevent scrolling when overlay is active
   useEffect(() => {
@@ -96,22 +150,23 @@ export default function Home() {
     };
   }, [musicStarted]);
 
-  // Intersection Observer for verse section animations
+  // Intersection Observer for verse section animations (only triggers once)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            // Show content when 30% or more is visible
+            // Show content when 50% or more is visible
             setShowVerseSection(true);
-          } else if (!entry.isIntersecting) {
-            // Hide content when section is completely out of view
-            setShowVerseSection(false);
+            // Unobserve after first trigger to prevent replay
+            if (verseSectionRef.current) {
+              observer.unobserve(verseSectionRef.current);
+            }
           }
         });
       },
       {
-        threshold: [0, 0.5], // Track when section enters/exits and when 30% is visible
+        threshold: [0, 0.5], // Track when 50% is visible
         rootMargin: "0px",
       }
     );
@@ -160,15 +215,18 @@ export default function Home() {
     };
   }, []);
 
-  // Intersection Observer for Form section animations (all 3 sections as one)
+  // Intersection Observer for Form section animations (only triggers once)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+            // Show content when 30% or more is visible
             setShowFormSection(true);
-          } else if (!entry.isIntersecting) {
-            setShowFormSection(false);
+            // Unobserve after first trigger to prevent replay
+            if (formSectionRef.current) {
+              observer.unobserve(formSectionRef.current);
+            }
           }
         });
       },
@@ -208,18 +266,24 @@ export default function Home() {
     }, 800);
   };
 
+  const handleScrollToRSVP = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const rsvpSection = document.getElementById("rsvp");
+    if (rsvpSection) {
+      rsvpSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!fullName) {
-      alert(
-        "Nama tidak ditemukan. Pastikan Anda mengakses undangan melalui link personal Anda."
-      );
+    if (!fullName || fullName.trim() === "") {
+      alert("Mohon isi nama lengkap Anda");
       return;
     }
 
-    if (!canAttend || !message) {
-      alert("Mohon lengkapi semua kolom yang diperlukan");
+    if (!canAttend) {
+      alert("Mohon lengkapi kolom konfirmasi kehadiran");
       return;
     }
 
@@ -291,7 +355,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="w-screen min-h-screen">
+      <div className="w-full min-h-screen">
         <WelcomeOverlay onOpen={handleOverlayOpen}>
           <Image
             src="/logo.png"
@@ -395,16 +459,23 @@ export default function Home() {
             </div>
 
             {/* RSVP Button */}
-            <a
-              href="https://forms.gle/4LBDDDcMSTt9ZTQh9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`mt-8 px-10 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-xl dancing-script font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
-                showContent ? "animate-fade-in delay-400" : "opacity-0"
+            <div
+              className={`mt-8 transition-all duration-800 delay-400 ${
+                showContent
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-5 pointer-events-none"
               }`}
             >
-              Konfirmasi Kehadiran
-            </a>
+              <a
+                href="#rsvp"
+                onClick={handleScrollToRSVP}
+                className={`inline-block px-10 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-xl dancing-script font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.05] cursor-pointer ${
+                  isInRSVPSection ? "opacity-0 pointer-events-none" : ""
+                }`}
+              >
+                Konfirmasi Kehadiran
+              </a>
+            </div>
           </div>
           <div className="hidden md:block md:w-5/12 xl:w-3/12 h-full"></div>
           <ReactLenis
@@ -490,9 +561,7 @@ export default function Home() {
                       width={100}
                       height={100}
                       className={
-                        showVerseSection
-                          ? "animate-fade-in delay-100"
-                          : "opacity-0"
+                        showVerseSection ? "animate-fade-in" : "opacity-0"
                       }
                     />
                   </div>
@@ -546,7 +615,7 @@ export default function Home() {
                     <div
                       className={`text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right ${
                         showVerseSection
-                          ? "animate-fade-in delay-300"
+                          ? "animate-typing delay-400"
                           : "opacity-0"
                       }`}
                     >
@@ -555,41 +624,41 @@ export default function Home() {
                       مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ
                       لِّقَوْمٍ يَتَفَكَّرُونَ
                     </div>
-                    <div
-                      className={`flex justify-end mt-4 ${
-                        showVerseSection
-                          ? "animate-fade-in delay-400"
-                          : "opacity-0"
-                      }`}
-                    >
-                      <div className="relative w-7/12 h-[1px] bg-gray-600">
+                    <div className="flex justify-end mt-4">
+                      <div
+                        className={`relative h-[1px] bg-gray-600 ${
+                          showVerseSection
+                            ? "animate-line-reveal-right delay-1600"
+                            : "w-0 opacity-0"
+                        }`}
+                      >
                         <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
                     <div
                       className={`text-center text-sm md:text-base dancing-script text-center my-4 font-bold ${
                         showVerseSection
-                          ? "animate-fade-in delay-500"
+                          ? "animate-fade-in delay-1800"
                           : "opacity-0"
                       }`}
                     >
                       QS. Ar-Rum: 21
                     </div>
-                    <div
-                      className={`flex mb-4 ${
-                        showVerseSection
-                          ? "animate-fade-in delay-600"
-                          : "opacity-0"
-                      }`}
-                    >
-                      <div className="relative w-7/12 h-[1px] bg-gray-600">
+                    <div className="flex mb-4">
+                      <div
+                        className={`relative h-[1px] bg-gray-600 ${
+                          showVerseSection
+                            ? "animate-line-reveal-left delay-2000"
+                            : "w-0 opacity-0"
+                        }`}
+                      >
                         <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
                     <div
                       className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
                         showVerseSection
-                          ? "animate-fade-in delay-700"
+                          ? "animate-fade-in delay-2200"
                           : "opacity-0"
                       }`}
                     >
@@ -605,7 +674,7 @@ export default function Home() {
                     <div
                       className={`text-center text-sm md:text-lg noto-naskh-arabic text-gray-600 text-right ${
                         showVerseSection
-                          ? "animate-fade-in delay-800"
+                          ? "animate-typing delay-3000"
                           : "opacity-0"
                       }`}
                     >
@@ -613,41 +682,41 @@ export default function Home() {
                       أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ
                       وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا
                     </div>
-                    <div
-                      className={`flex justify-end mt-4 ${
-                        showVerseSection
-                          ? "animate-fade-in delay-900"
-                          : "opacity-0"
-                      }`}
-                    >
-                      <div className="relative w-7/12 h-[1px] bg-gray-600">
+                    <div className="flex justify-end mt-4">
+                      <div
+                        className={`relative h-[1px] bg-gray-600 ${
+                          showVerseSection
+                            ? "animate-line-reveal-right delay-4200"
+                            : "w-0 opacity-0"
+                        }`}
+                      >
                         <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
                     <div
                       className={`text-center text-sm md:text-base dancing-script text-center my-4 font-bold ${
                         showVerseSection
-                          ? "animate-fade-in delay-1000"
+                          ? "animate-fade-in delay-4400"
                           : "opacity-0"
                       }`}
                     >
                       QS. Al-Furqan: 74
                     </div>
-                    <div
-                      className={`flex mb-4 ${
-                        showVerseSection
-                          ? "animate-fade-in delay-1100"
-                          : "opacity-0"
-                      }`}
-                    >
-                      <div className="relative w-7/12 h-[1px] bg-gray-600">
+                    <div className="flex mb-4">
+                      <div
+                        className={`relative h-[1px] bg-gray-600 ${
+                          showVerseSection
+                            ? "animate-line-reveal-left delay-4600"
+                            : "w-0 opacity-0"
+                        }`}
+                      >
                         <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
                       </div>
                     </div>
                     <div
                       className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
                         showVerseSection
-                          ? "animate-fade-in delay-1200"
+                          ? "animate-fade-in delay-4800"
                           : "opacity-0"
                       }`}
                     >
@@ -663,48 +732,13 @@ export default function Home() {
                 ref={brideGroomSectionRef}
                 className="relative w-full h-screen flex flex-col justify-center items-center py-8 md:py-24 px-4 md:px-12 overflow-hidden bg-white"
               >
-                <div className="w-full md:w-1/2 flex flex-col gap-4 md:gap-8">
+                {/* Floating Sky Animation */}
+                {showBrideGroomSection && <FloatingSky />}
+                <div className="w-full md:w-1/2 flex flex-col gap-12 md:gap-16 relative z-10">
                   <div className={`flex flex-col gap-4 md:gap-6 `}>
-                    <div className="flex flex-col gap-4">
-                      <div
-                        className={`text-base md:text-xl noto-naskh-arabic text-gray-600 text-right font-bold ${
-                          showBrideGroomSection
-                            ? "animate-fade-in delay-100"
-                            : "opacity-0"
-                        }`}
-                      >
-                        بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ
-                      </div>
-                      <div
-                        className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
-                          showBrideGroomSection
-                            ? "animate-fade-in delay-200"
-                            : "opacity-0"
-                        }`}
-                      >
-                        Dalam kasih dan izin-Nya kami dipertemukan, <br />
-                        menapaki jalan cinta yang diridhai Allah SWT.
-                      </div>
-                    </div>
-                    <div
-                      className={`flex justify-center py-4 ${
-                        showBrideGroomSection
-                          ? "animate-fade-in delay-300"
-                          : "opacity-0"
-                      }`}
-                    >
-                      <div className="relative w-5/12 md:w-6/12 h-[1px] bg-gray-600">
-                        <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
-                      </div>
-                      <div className="relative w-5/12 md:w-6/12 h-[1px] bg-gray-600">
-                        <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
-                      </div>
-                    </div>
                     <div
                       className={`text-xs md:text-base ubuntu text-gray-600 font-light ${
-                        showBrideGroomSection
-                          ? "animate-fade-in delay-400"
-                          : "opacity-0"
+                        showBrideGroomSection ? "animate-fade-in" : "opacity-0"
                       }`}
                     >
                       Putra Pertama{" "}
@@ -714,7 +748,7 @@ export default function Home() {
                     <div
                       className={`${
                         showBrideGroomSection
-                          ? "animate-fade-in delay-500"
+                          ? "animate-fade-in delay-200"
                           : "opacity-0"
                       }`}
                     >
@@ -725,25 +759,27 @@ export default function Home() {
                     </div>
                   </div>
                   <div
-                    className={`w-full h-[160px] flex justify-center items-center overflow-hidden ${
+                    className={`w-full h-[160px] flex justify-center items-center overflow-visible ${
                       showBrideGroomSection
                         ? "animate-fade-in delay-600"
                         : "opacity-0"
                     }`}
                   >
-                    <Image
-                      src="/love.png"
-                      alt="Love"
-                      width={250}
-                      height={250}
-                      className="w-[250px] h-[250px] object-cover"
-                    />
+                    <div ref={loveIconRef} className="will-change-transform">
+                      <Image
+                        src="/love.png"
+                        alt="Love"
+                        width={250}
+                        height={250}
+                        className="w-[250px] h-[250px] object-cover animate-romantic-float"
+                      />
+                    </div>
                   </div>
                   <div className={`flex flex-col items-end gap-4 md:gap-6`}>
                     <div
                       className={`${
                         showBrideGroomSection
-                          ? "animate-fade-in delay-700"
+                          ? "animate-fade-in delay-1000"
                           : "opacity-0"
                       }`}
                     >
@@ -755,7 +791,7 @@ export default function Home() {
                     <div
                       className={`text-xs md:text-base ubuntu text-gray-600 ${
                         showBrideGroomSection
-                          ? "animate-fade-in delay-800"
+                          ? "animate-fade-in delay-1400"
                           : "opacity-0"
                       }`}
                     >
@@ -764,23 +800,9 @@ export default function Home() {
                     </div>
                   </div>
                   <div
-                    className={`flex justify-center py-4 ${
+                    className={`text-lg md:text-xl dancing-script text-gray-600 text-center font-bold mt-8 underline ${
                       showBrideGroomSection
-                        ? "animate-fade-in delay-900"
-                        : "opacity-0"
-                    }`}
-                  >
-                    <div className="relative w-5/12 md:w-6/12 h-[1px] bg-gray-600">
-                      <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
-                    </div>
-                    <div className="relative w-5/12 md:w-6/12 h-[1px] bg-gray-600">
-                      <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-[5px] h-[5px] bg-gray-600 rounded-full"></div>
-                    </div>
-                  </div>
-                  <div
-                    className={`text-lg md:text-xl dancing-script text-gray-600 text-center font-bold ${
-                      showBrideGroomSection
-                        ? "animate-fade-in delay-1000"
+                        ? "animate-fade-in delay-1800"
                         : "opacity-0"
                     }`}
                   >
@@ -898,7 +920,11 @@ export default function Home() {
                 </div>
 
                 {/* RSVP Form & Message Section - Combined */}
-                <div className="relative w-full h-2/3 bg-white overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8">
+                <div
+                  ref={rsvpSectionRef}
+                  id="rsvp"
+                  className="relative w-full h-2/3 bg-white overflow-y-auto flex flex-col justify-center items-center py-4 md:py-6 px-4 md:px-8"
+                >
                   <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col gap-4">
                     <div
                       className={`text-2xl md:text-3xl dancing-script text-center font-bold text-gray-800 mb-4 md:mb-8 ${
@@ -911,18 +937,6 @@ export default function Home() {
                         ? "Perbarui Konfirmasi Kehadiran"
                         : "Konfirmasi Kehadiran & Ucapan"}
                     </div>
-                    {!fullName && (
-                      <div
-                        className={`text-xs md:text-sm ubuntu text-amber-700 bg-amber-50 py-2 px-3 rounded-lg border border-amber-200 ${
-                          showFormSection
-                            ? "animate-fade-in delay-800"
-                            : "opacity-0"
-                        }`}
-                      >
-                        ⚠️ Mohon akses undangan melalui link personal yang telah
-                        dikirimkan kepada Anda.
-                      </div>
-                    )}
 
                     {/* Full Name Input - Full Width */}
                     <div
@@ -942,14 +956,27 @@ export default function Home() {
                         type="text"
                         id="fullName"
                         value={fullName}
-                        disabled
-                        className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg ubuntu transition-all bg-gray-50 text-gray-700 cursor-not-allowed"
-                        placeholder="Nama akan terisi otomatis dari undangan"
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu transition-all bg-white"
+                        placeholder="Masukkan nama lengkap Anda"
                         required
                       />
-                      <p className="text-[10px] md:text-xs text-gray-500 ubuntu font-bold">
-                        Ini adalah undangan personal untuk Anda
-                      </p>
+                      {/* Autocomplete suggestion */}
+                      {guestName !== "Tamu Undangan" && !fullName && (
+                        <button
+                          type="button"
+                          onClick={() => setFullName(guestName)}
+                          className="text-[10px] md:text-xs text-gray-600 ubuntu py-1.5 px-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded text-left transition-colors"
+                        >
+                          💡 Gunakan nama ini:{" "}
+                          <span className="font-bold">{guestName}</span>
+                        </button>
+                      )}
+                      {guestName === "Tamu Undangan" && (
+                        <p className="text-[10px] md:text-xs text-amber-600 ubuntu">
+                          ⚠️ Mohon isi nama lengkap Anda
+                        </p>
+                      )}
                     </div>
 
                     {/* Can Attend and Number of Persons - Side by Side */}
@@ -1044,7 +1071,6 @@ export default function Home() {
                         className="text-xs md:text-sm ubuntu text-gray-600 font-light"
                       >
                         Doa dan Ucapan untuk Kami
-                        <span className="text-red-500">*</span>
                       </label>
                       <textarea
                         id="message"
@@ -1053,7 +1079,6 @@ export default function Home() {
                         rows={3}
                         className="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20 ubuntu resize-none"
                         placeholder="Titipkan doa terbaikmu untuk perjalanan kami..."
-                        required
                       />
                     </div>
 

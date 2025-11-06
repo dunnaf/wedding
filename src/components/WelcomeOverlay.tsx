@@ -95,13 +95,15 @@ export default function WelcomeOverlay({
         </div>
 
         {/* Open Button */}
-        <button
-          onClick={handleOpen}
-          className="px-10 py-4 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-xl dancing-script font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 animate-fade-in delay-600 relative overflow-hidden group"
-        >
-          <span className="relative z-10">Buka Undangan</span>
-          <span className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-900 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-        </button>
+        <div className="animate-fade-in delay-600">
+          <button
+            onClick={handleOpen}
+            className="px-10 py-4 bg-gray-800 hover:bg-gray-900 text-white rounded-full text-xl dancing-script font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 relative overflow-hidden group cursor-pointer"
+          >
+            <span className="relative z-10">Buka Undangan</span>
+            <span className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-900 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+          </button>
+        </div>
       </div>
     </div>
   );

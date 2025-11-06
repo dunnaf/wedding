@@ -72,7 +72,7 @@ export default function FloatingFlowers() {
   };
 
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-visible z-[5]">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden z-[5]">
       {flowers.map((flower) => (
         <div
           key={flower.id}
