@@ -1200,6 +1200,24 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+
+              {/* Copyright Footer */}
+              <div className="relative w-full bg-white py-4 md:py-8 px-4 border-t border-gray-200">
+                <div className="flex flex-col items-center gap-1 md:gap-2 text-center">
+                  <p className="text-xs md:text-sm dancing-script text-gray-600 font-bold">
+                    © 2025 Nanda & Nisa · All rights reserved
+                  </p>
+                  <p className="text-[10px] md:text-xs ubuntu text-gray-500">
+                    Designed & Developed by{" "}
+                    <a
+                      href="mailto:dunnaf.dev@gmail.com"
+                      className="text-gray-700 hover:text-gray-900 font-semibold transition-colors underline"
+                    >
+                      dunnaf.dev
+                    </a>
+                  </p>
+                </div>
+              </div>
             </div>
           </ReactLenis>
         </div>
