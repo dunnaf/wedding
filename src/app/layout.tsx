@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Dancing_Script, Ubuntu, Noto_Naskh_Arabic } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/LanguageContext";
 
 const dancingScript = Dancing_Script({
   variable: "--font-dancing-script",
@@ -48,7 +49,7 @@ export default function RootLayout({
       <body
         className={`${dancingScript.variable} ${ubuntu.variable} ${notoNaskhArabic.variable} antialiased`}
       >
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

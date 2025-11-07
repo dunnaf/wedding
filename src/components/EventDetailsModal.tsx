@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface EventDetailsModalProps {
   showContent: boolean;
@@ -13,6 +14,7 @@ export default function EventDetailsModal({
   isOpen,
   onOpenChange,
 }: EventDetailsModalProps) {
+  const { t } = useLanguage();
   const [isDragging, setIsDragging] = useState(false);
   const [translateY, setTranslateY] = useState(0);
   const [startY, setStartY] = useState(0);
@@ -129,7 +131,7 @@ export default function EventDetailsModal({
         >
           <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-2" />
           <div className="text-sm uppercase ubuntu text-gray-600 font-semibold">
-            Geser ke Bawah
+            {t.event.swipeDown}
           </div>
         </div>
 
@@ -149,15 +151,15 @@ export default function EventDetailsModal({
               }`}
             >
               <div className="text-xs uppercase ubuntu text-gray-600 font-bold mb-2">
-                Tanggal & Waktu
+                {t.event.dateTimeLabel}
               </div>
               <div className="text-lg md:text-xl dancing-script text-center group-hover:text-blue-600 transition-colors">
-                Minggu, 7 Desember 2025
+                {t.event.date}
                 <br />
-                09:00 - 13:00 WIB
+                {t.event.time}
               </div>
               <div className="text-xs text-gray-500 ubuntu text-center mt-2">
-                Klik untuk menambahkan ke Google Calendar
+                {t.event.addToCalendar}
               </div>
             </a>
 
@@ -171,17 +173,17 @@ export default function EventDetailsModal({
               }`}
             >
               <div className="text-xs uppercase ubuntu text-gray-600 font-bold mb-2">
-                Lokasi
+                {t.event.locationLabel}
               </div>
               <div className="text-lg md:text-xl dancing-script text-center group-hover:text-blue-600 transition-colors">
-                Cordela Hotel Cirebon
+                {t.event.venueName}
                 <br />
-                Jl. Cipto Mangunkusumo No.111
+                {t.event.venueAddress}
                 <br />
-                Kota Cirebon, Jawa Barat 45133
+                {t.event.venueCity}
               </div>
               <div className="text-xs text-gray-500 ubuntu text-center mt-2">
-                Klik untuk melihat di Google Maps
+                {t.event.openMaps}
               </div>
             </a>
           </div>

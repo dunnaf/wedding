@@ -1,0 +1,182 @@
+{
+  "bahasa": {
+    "welcome": {
+      "title": "Selamat Datang di Pernikahan Kami",
+      "openButton": "Buka Undangan"
+    },
+    "hero": {
+      "dearGuest": "Kepada Yth.",
+      "defaultGuestName": "Tamu Undangan",
+      "subtitle": "Izinkan kami berbagi kisah cinta di hari istimewa kami.",
+      "specialGuests": {
+        "keluargaBesarMempelaiPria": "Keluarga Besar Mempelai Pria",
+        "keluargaBesarMempelaiWanita": "Keluarga Besar Mempelai Wanita",
+        "keluargaBesarSDITAlUmmah": "Keluarga Besar SDIT Al Ummah",
+        "keluargaBesarPodifi": "Keluarga Besar Podifi"
+      }
+    },
+    "event": {
+      "dateTimeLabel": "Tanggal & Waktu",
+      "date": "Minggu, 7 Desember 2025",
+      "time": "09:00 - 13:00 WIB",
+      "addToCalendar": "Klik untuk menambahkan ke Google Calendar",
+      "locationLabel": "Lokasi",
+      "venueName": "Cordela Hotel Cirebon",
+      "venueAddress": "Jl. Cipto Mangunkusumo No.111",
+      "venueCity": "Kota Cirebon, Jawa Barat 45133",
+      "openMaps": "Klik untuk melihat di Google Maps",
+      "eventDetails": "Detail Acara",
+      "viewEventDetails": "Lihat detail acara",
+      "swipeDown": "Geser ke Bawah"
+    },
+    "verses": {
+      "arRum21": "QS. Ar-Rum: 21",
+      "arRum21Translation": "\"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.\"",
+      "alFurqan74": "QS. Al-Furqan: 74",
+      "alFurqan74Translation": "\"Dan orang-orang yang berkata: 'Ya Tuhan kami, anugerahkanlah kepada kami istri-istri dan keturunan kami sebagai penyenang hati (kami), dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa.'\""
+    },
+    "couple": {
+      "groomTitle": "Putra Pertama",
+      "groomParents": "Aries Octavianus & Rini Arianti",
+      "groomName": "Nanda Achidunnafi",
+      "brideTitle": "Putri Pertama",
+      "brideParents": "Hisyam & Raeni",
+      "brideName": "Khoirun Nisa Amarsya",
+      "tagline": "Cinta sederhana, bahagia hingga surga."
+    },
+    "gift": {
+      "title": "Amplop Digital",
+      "subtitle": "💞 Dari hati, untuk rumah tangga baru kami 💞",
+      "accountCopied": "Nomor rekening telah disalin!"
+    },
+    "rsvp": {
+      "title": "Konfirmasi Kehadiran & Ucapan",
+      "updateTitle": "Perbarui Konfirmasi Kehadiran",
+      "confirmAttendance": "Konfirmasi Kehadiran",
+      "fullNameLabel": "Nama Lengkap",
+      "fullNamePlaceholder": "Masukkan nama lengkap Anda",
+      "useThisName": "Gunakan nama ini:",
+      "pleaseEnterFullName": "Mohon isi nama lengkap Anda",
+      "attendanceLabel": "Konfirmasi Kehadiran",
+      "attendancePlaceholder": "Pilih status kehadiran",
+      "attendingYes": "✓ Ya, saya akan hadir",
+      "attendingNo": "✗ Maaf, saya tidak bisa hadir",
+      "numberOfGuestsLabel": "Jumlah Tamu yang Hadir",
+      "guestCount": {
+        "1": "1 Orang",
+        "2": "2 Orang",
+        "3": "3 Orang",
+        "4": "4 Orang",
+        "5": "5 Orang"
+      },
+      "messageLabel": "Doa dan Ucapan untuk Kami",
+      "messagePlaceholder": "Titipkan doa terbaikmu untuk perjalanan kami...",
+      "submitButton": "Kirim RSVP",
+      "updateButton": "Perbarui RSVP",
+      "submittedButton": "✓ Terkirim!",
+      "updatedButton": "✓ Diperbarui!",
+      "submittingButton": "Mengirim...",
+      "updatingButton": "Memperbarui...",
+      "successMessage": "Konfirmasi diterima~ Terima kasih! ✨",
+      "updateSuccessMessage": "Konfirmasi berhasil diperbarui~ Terima kasih! ✨",
+      "required": "*"
+    },
+    "alerts": {
+      "pleaseEnterFullName": "Mohon isi nama lengkap Anda",
+      "pleaseConfirmAttendance": "Mohon lengkapi kolom konfirmasi kehadiran",
+      "pleaseEnterGuestCount": "Mohon isi jumlah tamu yang akan hadir",
+      "configError": "Konfigurasi tidak lengkap. Silakan hubungi administrator.",
+      "submitError": "Terjadi kesalahan. Silakan coba lagi."
+    }
+  },
+  "english": {
+    "welcome": {
+      "title": "Welcome to The Wedding",
+      "openButton": "Open Invitation"
+    },
+    "hero": {
+      "dearGuest": "Dear,",
+      "defaultGuestName": "Guest",
+      "subtitle": "Join us as we share our love story on the special day.",
+      "specialGuests": {
+        "keluargaBesarMempelaiPria": "The Groom’s Family",
+        "keluargaBesarMempelaiWanita": "The Bride’s Family",
+        "keluargaBesarSDITAlUmmah": "Beloved SDIT Al Ummah Family",
+        "keluargaBesarPodifi": "Beloved Podifi Family"
+      }
+    },
+    "event": {
+      "dateTimeLabel": "Date & Time",
+      "date": "Sunday, December 7, 2025",
+      "time": "09:00 - 13:00 WIB",
+      "addToCalendar": "Click to add to Google Calendar",
+      "locationLabel": "Location",
+      "venueName": "Cordela Hotel Cirebon",
+      "venueAddress": "Jl. Cipto Mangunkusumo No.111",
+      "venueCity": "Cirebon City, West Java 45133",
+      "openMaps": "Click to view on Google Maps",
+      "eventDetails": "Event Details",
+      "viewEventDetails": "View event details",
+      "swipeDown": "Swipe Down"
+    },
+    "verses": {
+      "arRum21": "QS. Ar-Rum: 21",
+      "arRum21Translation": "\"And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.\"",
+      "alFurqan74": "QS. Al-Furqan: 74",
+      "alFurqan74Translation": "\"And those who say, 'Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous.'\""
+    },
+    "couple": {
+      "groomTitle": "First Son of",
+      "groomParents": "Aries Octavianus & Rini Arianti",
+      "groomName": "Nanda Achidunnafi",
+      "brideTitle": "First Daughter of",
+      "brideParents": "Hisyam & Raeni",
+      "brideName": "Khoirun Nisa Amarsya",
+      "tagline": "A simple love, a happiness that lasts until heaven."
+    },
+    "gift": {
+      "title": "Digital Envelope",
+      "subtitle": "💞 A heartfelt gift for the new family 💞",
+      "accountCopied": "Account number has been copied!"
+    },
+    "rsvp": {
+      "title": "RSVP & Wishes",
+      "updateTitle": "Update RSVP",
+      "confirmAttendance": "Confirm Attendance",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "useThisName": "Use this name:",
+      "pleaseEnterFullName": "Please enter your full name",
+      "attendanceLabel": "Attendance Confirmation",
+      "attendancePlaceholder": "Select attendance status",
+      "attendingYes": "✓ Yes, I will attend",
+      "attendingNo": "✗ Sorry, I cannot attend",
+      "numberOfGuestsLabel": "Number of Guests Attending",
+      "guestCount": {
+        "1": "1 Person",
+        "2": "2 People",
+        "3": "3 People",
+        "4": "4 People",
+        "5": "5 People"
+      },
+      "messageLabel": "Prayers and Wishes for Us",
+      "messagePlaceholder": "Share your best wishes for our journey...",
+      "submitButton": "Submit RSVP",
+      "updateButton": "Update RSVP",
+      "submittedButton": "✓ Submitted!",
+      "updatedButton": "✓ Updated!",
+      "submittingButton": "Submitting...",
+      "updatingButton": "Updating...",
+      "successMessage": "RSVP received~ Thank you! ✨",
+      "updateSuccessMessage": "RSVP updated successfully~ Thank you! ✨",
+      "required": "*"
+    },
+    "alerts": {
+      "pleaseEnterFullName": "Please enter your full name",
+      "pleaseConfirmAttendance": "Please confirm your attendance",
+      "pleaseEnterGuestCount": "Please enter the number of guests attending",
+      "configError": "Configuration incomplete. Please contact administrator.",
+      "submitError": "An error occurred. Please try again."
+    }
+  }
+}
