@@ -25,17 +25,31 @@ export const metadata: Metadata = {
   description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami. Minggu, 7 Desember 2025 di Cordela Hotel Cirebon.",
   keywords: ["pernikahan", "undangan pernikahan", "Nisa", "Nanda", "wedding", "Cirebon", "Desember 2025"],
   authors: [{ name: "Nanda & Nisa" }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: "Nanda & Nisa - Undangan Pernikahan",
     description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami.",
     type: "website",
     locale: "id_ID",
     siteName: "Nanda & Nisa Wedding",
+    url: "https://www.fisya.space",
   },
   twitter: {
     card: "summary_large_image",
     title: "Nanda & Nisa - Undangan Pernikahan",
     description: "Kami dengan senang hati mengundang Anda untuk hadir dan berbagi kebahagiaan di hari pernikahan kami.",
+  },
+  alternates: {
+    canonical: "https://www.fisya.space",
   },
 };
 
