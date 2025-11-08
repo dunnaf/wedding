@@ -1121,6 +1121,7 @@ export default function Home() {
                               ? "border-gray-200 text-gray-400 cursor-not-allowed"
                               : "border-gray-300 focus:border-gray-800 focus:ring-1 focus:ring-gray-800/20"
                           }`}
+                          placeholder={t.rsvp.numberOfGuestsPlaceholder}
                           required={canAttend === "yes"}
                           disabled={canAttend !== "yes"}
                         />

@@ -62,6 +62,7 @@
       "attendingYes": "✓ Ya, saya akan hadir",
       "attendingNo": "✗ Maaf, saya tidak bisa hadir",
       "numberOfGuestsLabel": "Jumlah Tamu yang Hadir",
+      "numberOfGuestsPlaceholder": "Contoh: 2",
       "guestCount": {
         "1": "1 Orang",
         "2": "2 Orang",
@@ -152,6 +153,7 @@
       "attendingYes": "✓ Yes, I will attend",
       "attendingNo": "✗ Sorry, I cannot attend",
       "numberOfGuestsLabel": "Number of Guests Attending",
+      "numberOfGuestsPlaceholder": "e.g., 2",
       "guestCount": {
         "1": "1 Person",
         "2": "2 People",
