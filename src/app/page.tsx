@@ -35,7 +35,7 @@ export default function Home() {
   // Form states
   const [fullName, setFullName] = useState("");
   const [canAttend, setCanAttend] = useState<"" | "yes" | "no">("");
-  const [numberOfPersons, setNumberOfPersons] = useState("1");
+  const [numberOfPersons, setNumberOfPersons] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
